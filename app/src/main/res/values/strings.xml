@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Money Tracker</string>
+
+    <!-- Widget -->
+    <string name="widget_name">Portfolio</string>
+    <string name="widget_description">Gain or loss of every purchase against the current price</string>
+    <string name="widget_title">Portfolio</string>
+    <string name="widget_empty">No purchases yet. Tap to add one.</string>
+
+    <!-- Navigation -->
+    <string name="nav_portfolio">Portfolio</string>
+    <string name="nav_summary">Summary</string>
+    <string name="nav_history">History</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Actions -->
+    <string name="action_add_lot">Add purchase</string>
+    <string name="action_allow_notifications">Allow notifications</string>
+    <string name="action_back">Back</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_more">More options</string>
+    <string name="action_move_down">Move down</string>
+    <string name="action_move_up">Move up</string>
+    <string name="action_ok">OK</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_reopen">Restore as open</string>
+    <string name="action_retry">Try again</string>
+    <string name="action_save">Save</string>
+    <string name="action_sell">Sell</string>
+    <string name="action_use_current_price">Use current price</string>
+    <string name="refreshing">Refreshing…</string>
+
+    <!-- Portfolio -->
+    <string name="updated_at">Updated %1$s</string>
+    <string name="updated_at_failed">Updated %1$s · some prices failed</string>
+    <string name="portfolio_empty_title">No purchases yet</string>
+    <string name="portfolio_empty_body">Add a stock, ETF or cryptocurrency with the price you paid. The widget will show how each purchase is doing.</string>
+    <string name="day_change">%1$s today</string>
+    <string name="average_price_weighted">Avg. price %1$s</string>
+    <string name="average_price_simple">Avg. of buy prices %1$s</string>
+    <string name="position_value">Value %1$s</string>
+
+    <!-- Asset kinds -->
+    <string name="kind_stock">Stock</string>
+    <string name="kind_etf">ETF</string>
+    <string name="kind_crypto">Crypto</string>
+
+    <!-- Add / edit purchase -->
+    <string name="title_add_lot">Add purchase</string>
+    <string name="title_edit_lot">Edit purchase</string>
+    <string name="search_label">Stock, ETF or crypto</string>
+    <string name="search_placeholder">e.g. PKN.PL, AAPL, VWCE, bitcoin</string>
+    <string name="search_hint">Type a name or ticker. XTB tickers such as PKN.PL, AAPL.US or CSPX.UK work too.</string>
+    <string name="search_failed">Search failed. Check your internet connection.</string>
+    <string name="search_no_results">Nothing found.</string>
+    <string name="search_section_securities">Stocks and ETFs</string>
+    <string name="search_section_crypto">Cryptocurrencies</string>
+    <string name="resolve_failed">Could not load the price of this instrument. Try again.</string>
+    <string name="field_buy_date">Purchase date</string>
+    <string name="field_currency">Currency</string>
+    <string name="field_buy_price">Price per unit (%1$s)</string>
+    <string name="current_price_hint">Current price: %1$s</string>
+    <string name="field_quantity">Quantity (optional)</string>
+    <string name="field_quantity_hint">With a quantity the app also shows the gain as an amount</string>
+    <string name="field_custom_alerts">Custom alert thresholds</string>
+    <string name="default_alerts_hint">Default: +%1$s%% / −%2$s%% (Settings)</string>
+    <string name="field_alert_up">Rise alert, %</string>
+    <string name="field_alert_down">Drop alert, %</string>
+    <string name="alerts_zero_hint">0 turns that alert off.</string>
+    <string name="delete_lot_title">Delete purchase?</string>
+    <string name="delete_lot_body">The purchase will be removed for good.</string>
+
+    <!-- Instrument -->
+    <string name="section_open_lots">Purchases</string>
+    <string name="section_sold_lots">Sold</string>
+    <string name="total_result">Total result</string>
+    <string name="label_average_weighted">Average price (weighted)</string>
+    <string name="label_average_simple">Average of buy prices</string>
+    <string name="label_lots_count">Purchases</string>
+    <string name="label_quantity">Quantity</string>
+    <string name="label_invested">Invested</string>
+    <string name="label_value">Value</string>
+    <string name="label_gain">Gain / loss</string>
+    <string name="range_week">1W</string>
+    <string name="range_month">1M</string>
+    <string name="range_half_year">6M</string>
+    <string name="range_year">1Y</string>
+    <string name="range_max">MAX</string>
+    <string name="chart_no_data">No data for this period</string>
+    <string name="chart_error">Could not load the chart</string>
+    <string name="chart_price_description">Price chart in %1$s</string>
+    <string name="chart_crypto_limit">Crypto history is limited to the last 365 days (free CoinGecko API).</string>
+    <string name="chart_buy_lines_hint">Dashed lines mark your purchase prices. Touch the chart to read values.</string>
+    <string name="sell_title">Sell purchase</string>
+    <string name="sell_lot_summary">Bought on %1$s at %2$s</string>
+    <string name="field_sell_date">Sale date</string>
+    <string name="field_sell_price">Sale price (%1$s)</string>
+    <string name="field_sell_quantity">Quantity sold (max %1$s)</string>
+    <string name="sell_result">Result</string>
+
+    <!-- History -->
+    <string name="history_empty_title">Nothing sold yet</string>
+    <string name="history_empty_body">Sold purchases appear here with their realised result.</string>
+    <string name="history_line">%1$s @%2$s → %3$s @%4$s</string>
+    <string name="realized_result">Realised result</string>
+    <string name="total_in_pln">Total in PLN</string>
+
+    <!-- Summary -->
+    <string name="summary_empty_title">Nothing to summarise yet</string>
+    <string name="summary_empty_body">Add purchases with a quantity to see the value of your portfolio.</string>
+    <string name="summary_value">Portfolio value</string>
+    <string name="summary_no_values">Add quantities to your purchases to see amounts.</string>
+    <string name="summary_per_currency">By currency</string>
+    <string name="summary_fx_note">Converted to PLN with NBP rates from %1$s. Only purchases with a quantity are counted.</string>
+    <string name="summary_missing_fx">No rate for: %1$s.</string>
+    <string name="summary_allocation">Allocation</string>
+    <string name="allocation_by_instrument">Instruments</string>
+    <string name="allocation_by_kind">Types</string>
+    <string name="allocation_other">Other</string>
+    <string name="summary_timeline">Value over time</string>
+    <string name="series_value">Value</string>
+    <string name="series_invested">Invested</string>
+    <string name="timeline_missing">No history for: %1$s (left out).</string>
+    <string name="timeline_note">In PLN with the NBP rate of each day.</string>
+    <string name="summary_lots_without_quantity">%1$d open purchase(s) have no quantity and only count in percentages.</string>
+
+    <!-- Settings -->
+    <string name="settings_alerts">Alerts</string>
+    <string name="settings_alerts_enabled">Threshold alerts</string>
+    <string name="settings_alerts_description">A notification when a purchase rises or falls past the threshold</string>
+    <string name="settings_notifications_blocked">Notifications are blocked for this app.</string>
+    <string name="settings_widget">Widget</string>
+    <string name="settings_widget_theme">Theme</string>
+    <string name="settings_widget_opacity">Background opacity: %1$d%%</string>
+    <string name="settings_widget_instruments">Shown on the widget (order is shared with the app)</string>
+    <string name="settings_widget_no_instruments">Add a purchase first.</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="settings_refresh">Refreshing</string>
+    <string name="settings_refresh_description">Prices refresh automatically every 30 minutes when the phone is online. Stock prices are skipped at weekends.</string>
+    <string name="settings_never_refreshed">Not refreshed yet</string>
+    <string name="settings_about">About</string>
+    <string name="settings_data_sources">Prices: Yahoo Finance (stocks, ETFs), CoinGecko (crypto). Exchange rates: NBP.</string>
+    <string name="settings_disclaimer">Yahoo Finance has no official public API, so stock prices may stop working without notice. Prices can be delayed. This is not investment advice.</string>
+    <string name="settings_version">Version %1$s</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_alerts">Price alerts</string>
+    <string name="notification_channel_alerts_description">A purchase passed its rise or drop threshold</string>
+    <string name="alert_up_text">Purchase from %1$s at %2$s is up more than %3$s%%</string>
+    <string name="alert_down_text">Purchase from %1$s at %2$s is down more than %3$s%%</string>
+</resources>

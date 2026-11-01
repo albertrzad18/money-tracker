@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Money Tracker</string>
+
+    <!-- Widget -->
+    <string name="widget_name">Portfel</string>
+    <string name="widget_description">Zysk lub strata każdego zakupu względem aktualnego kursu</string>
+    <string name="widget_title">Portfel</string>
+    <string name="widget_empty">Brak zakupów. Dotknij, aby dodać.</string>
+
+    <!-- Navigation -->
+    <string name="nav_portfolio">Portfel</string>
+    <string name="nav_summary">Podsumowanie</string>
+    <string name="nav_history">Historia</string>
+    <string name="nav_settings">Ustawienia</string>
+
+    <!-- Actions -->
+    <string name="action_add_lot">Dodaj zakup</string>
+    <string name="action_allow_notifications">Zezwól na powiadomienia</string>
+    <string name="action_back">Wstecz</string>
+    <string name="action_cancel">Anuluj</string>
+    <string name="action_clear">Wyczyść</string>
+    <string name="action_delete">Usuń</string>
+    <string name="action_edit">Edytuj</string>
+    <string name="action_more">Więcej opcji</string>
+    <string name="action_move_down">Przesuń w dół</string>
+    <string name="action_move_up">Przesuń w górę</string>
+    <string name="action_ok">OK</string>
+    <string name="action_refresh">Odśwież</string>
+    <string name="action_reopen">Przywróć jako otwarty</string>
+    <string name="action_retry">Spróbuj ponownie</string>
+    <string name="action_save">Zapisz</string>
+    <string name="action_sell">Sprzedaj</string>
+    <string name="action_use_current_price">Użyj bieżącego kursu</string>
+    <string name="refreshing">Odświeżanie…</string>
+
+    <!-- Portfolio -->
+    <string name="updated_at">Aktualizacja %1$s</string>
+    <string name="updated_at_failed">Aktualizacja %1$s · części kursów nie pobrano</string>
+    <string name="portfolio_empty_title">Brak zakupów</string>
+    <string name="portfolio_empty_body">Dodaj akcję, ETF lub kryptowalutę z ceną, po której kupiłeś. Widget pokaże wynik każdego zakupu.</string>
+    <string name="day_change">%1$s dziś</string>
+    <string name="average_price_weighted">Śr. cena %1$s</string>
+    <string name="average_price_simple">Śr. cen zakupu %1$s</string>
+    <string name="position_value">Wartość %1$s</string>
+
+    <!-- Asset kinds -->
+    <string name="kind_stock">Akcja</string>
+    <string name="kind_etf">ETF</string>
+    <string name="kind_crypto">Krypto</string>
+
+    <!-- Add / edit purchase -->
+    <string name="title_add_lot">Dodaj zakup</string>
+    <string name="title_edit_lot">Edytuj zakup</string>
+    <string name="search_label">Akcja, ETF lub krypto</string>
+    <string name="search_placeholder">np. PKN.PL, AAPL, VWCE, bitcoin</string>
+    <string name="search_hint">Wpisz nazwę lub ticker. Działają też tickery z XTB, np. PKN.PL, AAPL.US, CSPX.UK.</string>
+    <string name="search_failed">Wyszukiwanie nie powiodło się. Sprawdź połączenie z internetem.</string>
+    <string name="search_no_results">Nic nie znaleziono.</string>
+    <string name="search_section_securities">Akcje i ETF-y</string>
+    <string name="search_section_crypto">Kryptowaluty</string>
+    <string name="resolve_failed">Nie udało się pobrać kursu tego instrumentu. Spróbuj ponownie.</string>
+    <string name="field_buy_date">Data zakupu</string>
+    <string name="field_currency">Waluta</string>
+    <string name="field_buy_price">Cena za sztukę (%1$s)</string>
+    <string name="current_price_hint">Bieżący kurs: %1$s</string>
+    <string name="field_quantity">Ilość (opcjonalnie)</string>
+    <string name="field_quantity_hint">Z ilością aplikacja pokaże też zysk w kwocie</string>
+    <string name="field_custom_alerts">Własne progi alertów</string>
+    <string name="default_alerts_hint">Domyślne: +%1$s%% / −%2$s%% (Ustawienia)</string>
+    <string name="field_alert_up">Alert wzrostu, %</string>
+    <string name="field_alert_down">Alert spadku, %</string>
+    <string name="alerts_zero_hint">0 wyłącza dany alert.</string>
+    <string name="delete_lot_title">Usunąć zakup?</string>
+    <string name="delete_lot_body">Zakup zostanie usunięty na stałe.</string>
+
+    <!-- Instrument -->
+    <string name="section_open_lots">Zakupy</string>
+    <string name="section_sold_lots">Sprzedane</string>
+    <string name="total_result">Wynik łączny</string>
+    <string name="label_average_weighted">Średnia cena (ważona)</string>
+    <string name="label_average_simple">Średnia cen zakupu</string>
+    <string name="label_lots_count">Liczba zakupów</string>
+    <string name="label_quantity">Ilość</string>
+    <string name="label_invested">Zainwestowano</string>
+    <string name="label_value">Wartość</string>
+    <string name="label_gain">Zysk / strata</string>
+    <string name="range_week">1T</string>
+    <string name="range_month">1M</string>
+    <string name="range_half_year">6M</string>
+    <string name="range_year">1R</string>
+    <string name="range_max">MAX</string>
+    <string name="chart_no_data">Brak danych w tym okresie</string>
+    <string name="chart_error">Nie udało się pobrać wykresu</string>
+    <string name="chart_price_description">Wykres kursu w %1$s</string>
+    <string name="chart_crypto_limit">Historia krypto jest ograniczona do ostatnich 365 dni (darmowe API CoinGecko).</string>
+    <string name="chart_buy_lines_hint">Przerywane linie to ceny Twoich zakupów. Dotknij wykresu, żeby odczytać wartości.</string>
+    <string name="sell_title">Sprzedaż</string>
+    <string name="sell_lot_summary">Kupione %1$s po %2$s</string>
+    <string name="field_sell_date">Data sprzedaży</string>
+    <string name="field_sell_price">Cena sprzedaży (%1$s)</string>
+    <string name="field_sell_quantity">Sprzedana ilość (maks. %1$s)</string>
+    <string name="sell_result">Wynik</string>
+
+    <!-- History -->
+    <string name="history_empty_title">Nic jeszcze nie sprzedano</string>
+    <string name="history_empty_body">Sprzedane zakupy pojawią się tutaj ze zrealizowanym wynikiem.</string>
+    <string name="history_line">%1$s @%2$s → %3$s @%4$s</string>
+    <string name="realized_result">Zrealizowany wynik</string>
+    <string name="total_in_pln">Razem w PLN</string>
+
+    <!-- Summary -->
+    <string name="summary_empty_title">Nie ma jeszcze czego podsumować</string>
+    <string name="summary_empty_body">Dodaj zakupy z ilością, żeby zobaczyć wartość portfela.</string>
+    <string name="summary_value">Wartość portfela</string>
+    <string name="summary_no_values">Podaj ilości przy zakupach, żeby zobaczyć kwoty.</string>
+    <string name="summary_per_currency">Według walut</string>
+    <string name="summary_fx_note">Przeliczono na PLN po kursach NBP z %1$s. Liczone są tylko zakupy z podaną ilością.</string>
+    <string name="summary_missing_fx">Brak kursu dla: %1$s.</string>
+    <string name="summary_allocation">Struktura portfela</string>
+    <string name="allocation_by_instrument">Instrumenty</string>
+    <string name="allocation_by_kind">Typy</string>
+    <string name="allocation_other">Inne</string>
+    <string name="summary_timeline">Wartość w czasie</string>
+    <string name="series_value">Wartość</string>
+    <string name="series_invested">Zainwestowano</string>
+    <string name="timeline_missing">Brak historii dla: %1$s (pominięto).</string>
+    <string name="timeline_note">W PLN po kursie NBP z każdego dnia.</string>
+    <string name="summary_lots_without_quantity">Otwarte zakupy bez ilości (%1$d) są liczone tylko w procentach.</string>
+
+    <!-- Settings -->
+    <string name="settings_alerts">Alerty</string>
+    <string name="settings_alerts_enabled">Alerty progowe</string>
+    <string name="settings_alerts_description">Powiadomienie, gdy zakup wzrośnie lub spadnie poza próg</string>
+    <string name="settings_notifications_blocked">Powiadomienia dla tej aplikacji są zablokowane.</string>
+    <string name="settings_widget">Widget</string>
+    <string name="settings_widget_theme">Motyw</string>
+    <string name="settings_widget_opacity">Krycie tła: %1$d%%</string>
+    <string name="settings_widget_instruments">Widoczne na widgecie (kolejność wspólna z aplikacją)</string>
+    <string name="settings_widget_no_instruments">Najpierw dodaj zakup.</string>
+    <string name="theme_system">Systemowy</string>
+    <string name="theme_light">Jasny</string>
+    <string name="theme_dark">Ciemny</string>
+    <string name="settings_refresh">Odświeżanie</string>
+    <string name="settings_refresh_description">Kursy odświeżają się automatycznie co 30 minut, gdy telefon jest online. W weekendy kursy akcji są pomijane.</string>
+    <string name="settings_never_refreshed">Jeszcze nie odświeżono</string>
+    <string name="settings_about">O aplikacji</string>
+    <string name="settings_data_sources">Kursy: Yahoo Finance (akcje, ETF-y), CoinGecko (krypto). Kursy walut: NBP.</string>
+    <string name="settings_disclaimer">Yahoo Finance nie ma oficjalnego publicznego API, więc kursy akcji mogą bez ostrzeżenia przestać działać. Kursy mogą być opóźnione. To nie jest porada inwestycyjna.</string>
+    <string name="settings_version">Wersja %1$s</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_alerts">Alerty cenowe</string>
+    <string name="notification_channel_alerts_description">Zakup przekroczył próg wzrostu lub spadku</string>
+    <string name="alert_up_text">Zakup z %1$s po %2$s zyskał ponad %3$s%%</string>
+    <string name="alert_down_text">Zakup z %1$s po %2$s stracił ponad %3$s%%</string>
+</resources>
