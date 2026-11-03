@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.MoneyTracker" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- AppCompat parent for per-app languages; cream / dark window behind Compose avoids a flash on start. -->
+    <style name="Theme.MoneyTracker" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
 </resources>

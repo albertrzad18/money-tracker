@@ -1,10 +1,9 @@
 package io.github.albertrzad18.moneytracker.ui.summary
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,31 +11,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.PieChart
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
@@ -49,19 +37,24 @@ import io.github.albertrzad18.moneytracker.data.repo.HistoryRepository
 import io.github.albertrzad18.moneytracker.data.repo.PortfolioRepository
 import io.github.albertrzad18.moneytracker.data.repo.QuoteRepository
 import io.github.albertrzad18.moneytracker.data.repo.TimelineResult
-import io.github.albertrzad18.moneytracker.domain.AllocationSlice
-import io.github.albertrzad18.moneytracker.domain.Calc
 import io.github.albertrzad18.moneytracker.domain.PortfolioSummary
 import io.github.albertrzad18.moneytracker.domain.SummaryCalculator
-import io.github.albertrzad18.moneytracker.ui.components.ChartSeries
+import io.github.albertrzad18.moneytracker.ui.components.AreaChart
 import io.github.albertrzad18.moneytracker.ui.components.DonutChart
 import io.github.albertrzad18.moneytracker.ui.components.EmptyState
-import io.github.albertrzad18.moneytracker.ui.components.GainText
 import io.github.albertrzad18.moneytracker.ui.components.LabeledValue
-import io.github.albertrzad18.moneytracker.ui.components.LegendItem
-import io.github.albertrzad18.moneytracker.ui.components.LineChart
-import io.github.albertrzad18.moneytracker.ui.lot.kindLabel
-import io.github.albertrzad18.moneytracker.ui.theme.ChartColors
+import io.github.albertrzad18.moneytracker.ui.components.LegendDot
+import io.github.albertrzad18.moneytracker.ui.components.Lucide
+import io.github.albertrzad18.moneytracker.ui.components.MoneyCard
+import io.github.albertrzad18.moneytracker.ui.components.PillButton
+import io.github.albertrzad18.moneytracker.ui.components.PillButtonStyle
+import io.github.albertrzad18.moneytracker.ui.components.RangeChips
+import io.github.albertrzad18.moneytracker.ui.components.ScreenTitle
+import io.github.albertrzad18.moneytracker.ui.components.SegmentedPills
+import io.github.albertrzad18.moneytracker.ui.components.shareSlices
+import io.github.albertrzad18.moneytracker.ui.theme.MoneyTheme
+import io.github.albertrzad18.moneytracker.ui.theme.Pill
+import io.github.albertrzad18.moneytracker.ui.theme.amountColor
 import io.github.albertrzad18.moneytracker.ui.theme.gainColor
 import io.github.albertrzad18.moneytracker.util.Formatters
 import io.github.albertrzad18.moneytracker.util.runCatchingCancellable
@@ -74,7 +67,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.time.ZoneOffset
 import javax.inject.Inject
 
 sealed interface TimelineState {
@@ -84,6 +76,8 @@ sealed interface TimelineState {
 }
 
 enum class TimelineRange(val months: Long?) { HALF_YEAR(6), YEAR(12), MAX(null) }
+
+enum class AllocationBy { INSTRUMENT, KIND }
 
 @HiltViewModel
 class SummaryViewModel @Inject constructor(
@@ -99,6 +93,12 @@ class SummaryViewModel @Inject constructor(
     private val _timeline = MutableStateFlow<TimelineState>(TimelineState.Loading)
     val timeline: StateFlow<TimelineState> = _timeline.asStateFlow()
 
+    private val _allocationBy = MutableStateFlow(AllocationBy.INSTRUMENT)
+    val allocationBy: StateFlow<AllocationBy> = _allocationBy.asStateFlow()
+
+    private val _timelineRange = MutableStateFlow(TimelineRange.MAX)
+    val timelineRange: StateFlow<TimelineRange> = _timelineRange.asStateFlow()
+
     init {
         loadTimeline()
     }
@@ -110,218 +110,223 @@ class SummaryViewModel @Inject constructor(
                 .fold(onSuccess = { TimelineState.Loaded(it) }, onFailure = { TimelineState.Error })
         }
     }
+
+    fun setAllocationBy(by: AllocationBy) {
+        _allocationBy.value = by
+    }
+
+    fun setTimelineRange(range: TimelineRange) {
+        _timelineRange.value = range
+    }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SummaryScreen(viewModel: SummaryViewModel = hiltViewModel()) {
     val summary by viewModel.summary.collectAsStateWithLifecycle()
     val timeline by viewModel.timeline.collectAsStateWithLifecycle()
-    Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.nav_summary)) }) }) { padding ->
-        val current = summary ?: return@Scaffold
+    val allocationBy by viewModel.allocationBy.collectAsStateWithLifecycle()
+    val timelineRange by viewModel.timelineRange.collectAsStateWithLifecycle()
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .statusBarsPadding()
+            .verticalScroll(rememberScrollState()),
+    ) {
+        ScreenTitle(stringResource(R.string.nav_summary))
+        val current = summary ?: return@Column
         if (current.isEmpty && current.lotsWithoutQuantity == 0) {
             EmptyState(
-                icon = Icons.Outlined.PieChart,
+                icon = Lucide.ChartPie,
                 title = stringResource(R.string.summary_empty_title),
                 body = stringResource(R.string.summary_empty_body),
-                modifier = Modifier.padding(padding),
+                modifier = Modifier.padding(top = 40.dp),
             )
-            return@Scaffold
+            return@Column
         }
         Column(
-            Modifier.padding(padding).fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            Modifier.padding(start = 16.dp, top = 6.dp, end = 16.dp, bottom = 32.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             TotalsCard(current)
-            if (current.byInstrument.isNotEmpty()) AllocationCard(current)
-            TimelineCard(timeline, onRetry = viewModel::loadTimeline)
-            if (current.realizedPerCurrency.isNotEmpty()) RealizedCard(current)
+            if (current.byInstrument.isNotEmpty()) AllocationCard(current, allocationBy, viewModel::setAllocationBy)
+            TimelineCard(timeline, timelineRange, viewModel::setTimelineRange, onRetry = viewModel::loadTimeline)
+            if (current.realizedPerCurrency.isNotEmpty()) RealizedBlock(current)
             if (current.lotsWithoutQuantity > 0) {
                 Text(
                     stringResource(R.string.summary_lots_without_quantity, current.lotsWithoutQuantity),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 6.dp),
                 )
             }
         }
     }
+}
+
+@Composable
+private fun CardTitle(text: String) {
+    Text(text, style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(bottom = 12.dp))
 }
 
 @Composable
 private fun TotalsCard(summary: PortfolioSummary) {
-    ElevatedCard(Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(16.dp)) {
-            Text(stringResource(R.string.summary_value), style = MaterialTheme.typography.titleSmall)
-            val value = summary.valuePln
-            if (value == null) {
-                Text(stringResource(R.string.summary_no_values), style = MaterialTheme.typography.bodyMedium)
-            } else {
-                Row(verticalAlignment = Alignment.Bottom) {
-                    Text("≈ " + Formatters.money(value, "PLN"), style = MaterialTheme.typography.headlineMedium)
-                    Spacer(Modifier.width(12.dp))
-                    GainText(summary.pct, Modifier.padding(bottom = 4.dp), MaterialTheme.typography.titleMedium)
-                }
-                summary.costPln?.let { LabeledValue(stringResource(R.string.label_invested), "≈ " + Formatters.money(it, "PLN")) }
-                summary.gainPln?.let {
-                    LabeledValue(stringResource(R.string.label_gain), "≈ " + Formatters.signedMoney(it, "PLN"), valueColor = gainColor(it))
-                }
+    MoneyCard {
+        CardTitle(stringResource(R.string.summary_value))
+        val value = summary.valuePln
+        if (value == null) {
+            Text(stringResource(R.string.summary_no_values), style = MaterialTheme.typography.bodyMedium)
+        } else {
+            Row(verticalAlignment = Alignment.Bottom) {
+                Text("≈ " + Formatters.money(value, "PLN"), style = MaterialTheme.typography.displaySmall)
+                Spacer(Modifier.width(10.dp))
+                Text(
+                    Formatters.pct(summary.pct),
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = gainColor(summary.pct),
+                    modifier = Modifier.padding(bottom = 3.dp),
+                )
             }
-            if (summary.perCurrency.size > 1 || summary.perCurrency.any { it.currency != "PLN" }) {
-                Spacer(Modifier.height(12.dp))
-                Text(stringResource(R.string.summary_per_currency), style = MaterialTheme.typography.labelLarge)
+            Spacer(Modifier.height(10.dp))
+            summary.costPln?.let { LabeledValue(stringResource(R.string.label_invested), "≈ " + Formatters.money(it, "PLN")) }
+            summary.gainPln?.let {
+                LabeledValue(stringResource(R.string.label_gain), "≈ " + Formatters.signedMoney(it, "PLN"), valueColor = amountColor(it))
+            }
+        }
+        if (summary.perCurrency.size > 1 || summary.perCurrency.any { it.currency != "PLN" }) {
+            Text(
+                stringResource(R.string.summary_per_currency),
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
+            )
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 summary.perCurrency.forEach { total ->
-                    Row(Modifier.fillMaxWidth().padding(vertical = 2.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Text(total.currency, modifier = Modifier.width(56.dp), style = MaterialTheme.typography.bodyMedium)
-                        Text(
-                            Formatters.money(total.value, total.currency),
-                            modifier = Modifier.weight(1f),
-                            style = MaterialTheme.typography.bodyMedium,
-                        )
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(34.dp)
+                            .clip(Pill)
+                            .background(MoneyTheme.colors.inset)
+                            .padding(horizontal = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(total.currency, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold, modifier = Modifier.width(40.dp))
+                        Text(Formatters.money(total.value, total.currency), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f), maxLines = 1)
                         Text(
                             Formatters.signedMoney(total.gain, total.currency),
                             style = MaterialTheme.typography.bodySmall,
-                            color = gainColor(total.gain),
-                            modifier = Modifier.padding(end = 8.dp),
+                            color = amountColor(total.gain),
+                            modifier = Modifier.padding(end = 10.dp),
+                            maxLines = 1,
                         )
-                        GainText(total.pct)
+                        Text(Formatters.pct(total.pct), style = MaterialTheme.typography.labelLarge, color = gainColor(total.pct))
                     }
                 }
             }
-            Spacer(Modifier.height(8.dp))
-            val note = buildString {
-                append(stringResource(R.string.summary_fx_note, summary.fxDate?.let(Formatters::date) ?: "—"))
-                if (summary.missingFx.isNotEmpty()) {
-                    append(' ').append(stringResource(R.string.summary_missing_fx, summary.missingFx.sorted().joinToString()))
+        }
+        val note = buildString {
+            append(stringResource(R.string.summary_fx_note, summary.fxDate?.let(Formatters::date) ?: "—"))
+            if (summary.missingFx.isNotEmpty()) {
+                append(' ').append(stringResource(R.string.summary_missing_fx, summary.missingFx.sorted().joinToString()))
+            }
+        }
+        Text(note, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(top = 12.dp))
+    }
+}
+
+@Composable
+private fun AllocationCard(summary: PortfolioSummary, by: AllocationBy, onBy: (AllocationBy) -> Unit) {
+    val kindLabels = mapOf(
+        AssetKind.STOCK to stringResource(R.string.kind_stock_plural),
+        AssetKind.ETF to stringResource(R.string.kind_etf_plural),
+        AssetKind.CRYPTO to stringResource(R.string.kind_crypto_plural),
+    )
+    val source = when (by) {
+        AllocationBy.INSTRUMENT -> summary.byInstrument
+        AllocationBy.KIND -> summary.byKind.map { it.copy(label = kindLabels[it.kind] ?: it.label) }
+    }
+    val slices = shareSlices(source, MoneyTheme.colors.shares, stringResource(R.string.allocation_other))
+
+    MoneyCard {
+        CardTitle(stringResource(R.string.summary_allocation))
+        SegmentedPills(
+            options = listOf(stringResource(R.string.allocation_by_instrument), stringResource(R.string.allocation_by_kind)),
+            selectedIndex = by.ordinal,
+            onSelect = { onBy(AllocationBy.entries[it]) },
+        )
+        Row(Modifier.padding(top = 18.dp), verticalAlignment = Alignment.CenterVertically) {
+            DonutChart(
+                values = slices.map { it.share },
+                colors = slices.map { it.color },
+                modifier = Modifier.size(124.dp),
+                description = slices.joinToString { "${it.label} ${it.shareText}" },
+            )
+            Spacer(Modifier.width(20.dp))
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(1f)) {
+                slices.forEach { slice ->
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        LegendDot(slice.color, slice.label, Modifier.weight(1f), dotSize = 10.dp, fontSize = 13)
+                        Text(slice.shareText, style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Normal), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
                 }
             }
-            Text(note, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun AllocationCard(summary: PortfolioSummary) {
-    var byKind by rememberSaveable { mutableStateOf(false) }
-    val kindLabels = AssetKind.entries.associateWith { stringResource(kindLabel(it)) }
-    val otherLabel = stringResource(R.string.allocation_other)
-    val slots = ChartColors.slots()
-    val slices = foldSlices(
-        slices = if (byKind) summary.byKind.map { it.copy(label = kindLabels[it.kind] ?: it.label) } else summary.byInstrument,
-        otherLabel = otherLabel,
-    )
-    val colors = slices.mapIndexed { i, slice -> if (slice.kind == null && slice.label == otherLabel) ChartColors.other else slots[i] }
-
-    ElevatedCard(Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(16.dp)) {
-            Text(stringResource(R.string.summary_allocation), style = MaterialTheme.typography.titleSmall)
-            Spacer(Modifier.height(8.dp))
-            SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-                listOf(false to R.string.allocation_by_instrument, true to R.string.allocation_by_kind).forEachIndexed { index, (kind, label) ->
-                    SegmentedButton(
-                        selected = byKind == kind,
-                        onClick = { byKind = kind },
-                        shape = SegmentedButtonDefaults.itemShape(index, 2),
-                    ) { Text(stringResource(label)) }
-                }
-            }
-            Spacer(Modifier.height(12.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                DonutChart(
-                    values = slices.map { it.share },
-                    colors = colors,
-                    modifier = Modifier.size(132.dp),
-                    description = slices.joinToString { "${it.label} ${Formatters.pct(BigDecimal(it.share * 100.0)).removePrefix("+")}" },
+private fun TimelineCard(state: TimelineState, range: TimelineRange, onRange: (TimelineRange) -> Unit, onRetry: () -> Unit) {
+    val ranges = TimelineRange.entries
+    MoneyCard {
+        CardTitle(stringResource(R.string.summary_timeline))
+        RangeChips(
+            options = ranges.map {
+                stringResource(
+                    when (it) {
+                        TimelineRange.HALF_YEAR -> R.string.range_half_year
+                        TimelineRange.YEAR -> R.string.range_year
+                        TimelineRange.MAX -> R.string.range_max
+                    },
                 )
-                Spacer(Modifier.width(16.dp))
-                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    slices.forEachIndexed { i, slice ->
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            LegendItem(colors[i], slice.label, Modifier.weight(1f))
-                            Text(
-                                Formatters.pct(BigDecimal(slice.share * 100.0)).removePrefix("+"),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
+            },
+            selectedIndex = range.ordinal,
+            onSelect = { onRange(ranges[it]) },
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        )
+        Box(Modifier.fillMaxWidth().padding(top = 34.dp, bottom = 10.dp).height(170.dp), contentAlignment = Alignment.Center) {
+            when (state) {
+                TimelineState.Loading -> CircularProgressIndicator(Modifier.size(24.dp), strokeWidth = 2.5.dp)
+                TimelineState.Error -> Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(stringResource(R.string.chart_error), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
+                    Spacer(Modifier.height(8.dp))
+                    PillButton(stringResource(R.string.action_retry), onRetry, style = PillButtonStyle.Outlined, height = 40.dp)
                 }
+                is TimelineState.Loaded -> TimelineChart(state.result, range)
             }
         }
-    }
-}
-
-/** Keeps the 7 largest slices and folds the rest into "Other", so no generated 9th hue is ever needed. */
-private fun foldSlices(slices: List<AllocationSlice>, otherLabel: String): List<AllocationSlice> {
-    if (slices.size <= ChartColors.MAX_SLOTS) return slices
-    val kept = slices.take(ChartColors.MAX_SLOTS - 1)
-    val rest = slices.drop(ChartColors.MAX_SLOTS - 1)
-    return kept + AllocationSlice(
-        label = otherLabel,
-        kind = null,
-        valuePln = Calc.sum(rest.map { it.valuePln }),
-        share = rest.sumOf { it.share.toDouble() }.toFloat(),
-    )
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun TimelineCard(state: TimelineState, onRetry: () -> Unit) {
-    var range by rememberSaveable { mutableStateOf(TimelineRange.MAX) }
-    ElevatedCard(Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(16.dp)) {
-            Text(stringResource(R.string.summary_timeline), style = MaterialTheme.typography.titleSmall)
-            Spacer(Modifier.height(8.dp))
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                TimelineRange.entries.forEach { option ->
-                    FilterChip(
-                        selected = option == range,
-                        onClick = { range = option },
-                        label = {
-                            Text(
-                                stringResource(
-                                    when (option) {
-                                        TimelineRange.HALF_YEAR -> R.string.range_half_year
-                                        TimelineRange.YEAR -> R.string.range_year
-                                        TimelineRange.MAX -> R.string.range_max
-                                    },
-                                ),
-                            )
-                        },
-                    )
-                }
+        if (state is TimelineState.Loaded) {
+            val colors = MoneyTheme.colors
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.padding(top = 6.dp)) {
+                LegendDot(colors.chartLine, stringResource(R.string.series_value))
+                LegendDot(colors.chartSecondary, stringResource(R.string.series_invested))
             }
-            Box(Modifier.fillMaxWidth().height(240.dp), contentAlignment = Alignment.Center) {
-                when (state) {
-                    TimelineState.Loading -> CircularProgressIndicator()
-                    TimelineState.Error -> Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(stringResource(R.string.chart_error), color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        TextButton(onClick = onRetry) { Text(stringResource(R.string.action_retry)) }
-                    }
-                    is TimelineState.Loaded -> TimelineChart(state.result, range)
-                }
-            }
-            if (state is TimelineState.Loaded) {
-                val slots = ChartColors.slots()
-                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    LegendItem(slots[0], stringResource(R.string.series_value))
-                    LegendItem(slots[1], stringResource(R.string.series_invested))
-                }
-                if (state.result.missing.isNotEmpty()) {
-                    Text(
-                        stringResource(R.string.timeline_missing, state.result.missing.joinToString()),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(top = 4.dp),
-                    )
-                }
+            if (state.result.missing.isNotEmpty()) {
                 Text(
-                    stringResource(R.string.timeline_note),
+                    stringResource(R.string.timeline_missing, state.result.missing.joinToString()),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 4.dp),
+                    modifier = Modifier.padding(top = 8.dp),
                 )
             }
+            Text(
+                stringResource(R.string.timeline_note),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(top = 8.dp),
+            )
         }
     }
 }
@@ -330,35 +335,46 @@ private fun TimelineCard(state: TimelineState, onRetry: () -> Unit) {
 private fun TimelineChart(result: TimelineResult, range: TimelineRange) {
     val from = range.months?.let { LocalDate.now().minusMonths(it) }
     val points = result.points.filter { from == null || it.date >= from }
-    val slots = ChartColors.slots()
-    fun x(date: LocalDate) = date.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
-    val valueLabel = stringResource(R.string.series_value)
-    val investedLabel = stringResource(R.string.series_invested)
-    LineChart(
-        series = listOf(
-            ChartSeries(points.map { x(it.date) to it.value.toFloat() }, slots[0], valueLabel, fill = true),
-            ChartSeries(points.map { x(it.date) to it.invested.toFloat() }, slots[1], investedLabel),
-        ),
-        formatX = { millis -> Formatters.shortDate(java.time.Instant.ofEpochMilli(millis).atOffset(ZoneOffset.UTC).toLocalDate()) },
-        formatY = { Formatters.price(BigDecimal(it.toDouble())) + " zł" },
+    if (points.size < 2) {
+        Text(stringResource(R.string.chart_no_data), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        return
+    }
+    AreaChart(
+        values = points.map { it.value.toFloat() },
+        secondary = points.map { it.invested.toFloat() },
+        floorAtZero = true,
+        formatValue = { Formatters.money(BigDecimal.valueOf(it.toDouble()).setScale(0, java.math.RoundingMode.HALF_UP), "PLN") },
+        tooltip = { i -> "≈ ${Formatters.money(points[i].value, "PLN")} · ${Formatters.date(points[i].date)}" },
+        backgroundColor = MaterialTheme.colorScheme.surface,
         description = stringResource(R.string.summary_timeline),
-        modifier = Modifier.fillMaxSize().padding(top = 8.dp),
+        modifier = Modifier.fillMaxSize(),
+    )
+}
+
+/** Realized result on the green block: per currency and the PLN total. */
+@Composable
+fun RealizedBlock(summary: PortfolioSummary) {
+    RealizedBlock(
+        rows = summary.realizedPerCurrency.map { it.currency to it.amount },
+        totalPln = summary.realizedPln?.takeIf { summary.realizedPerCurrency.any { amount -> amount.currency != "PLN" } },
     )
 }
 
 @Composable
-private fun RealizedCard(summary: PortfolioSummary) {
-    ElevatedCard(Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(16.dp)) {
-            Text(stringResource(R.string.realized_result), style = MaterialTheme.typography.titleSmall)
-            summary.realizedPerCurrency.forEach {
-                LabeledValue(it.currency, Formatters.signedMoney(it.amount, it.currency), valueColor = gainColor(it.amount))
-            }
-            summary.realizedPln?.let {
-                if (summary.realizedPerCurrency.any { amount -> amount.currency != "PLN" }) {
-                    LabeledValue(stringResource(R.string.total_in_pln), "≈ " + Formatters.signedMoney(it, "PLN"), valueColor = gainColor(it))
-                }
-            }
-        }
+fun RealizedBlock(rows: List<Pair<String, BigDecimal>>, totalPln: BigDecimal?, modifier: Modifier = Modifier) {
+    val colors = MoneyTheme.colors
+    MoneyCard(modifier, color = colors.soft) {
+        Text(stringResource(R.string.realized_result), style = MaterialTheme.typography.titleMedium, color = colors.onSoft, modifier = Modifier.padding(bottom = 10.dp))
+        rows.forEach { (currency, amount) -> RealizedRow(currency, Formatters.signedMoney(amount, currency)) }
+        totalPln?.let { RealizedRow(stringResource(R.string.total_in_pln), "≈ " + Formatters.signedMoney(it, "PLN")) }
+    }
+}
+
+@Composable
+private fun RealizedRow(label: String, value: String) {
+    val ink = MoneyTheme.colors.onSoft
+    Row(Modifier.fillMaxWidth().padding(vertical = 3.dp)) {
+        Text(label, style = MaterialTheme.typography.bodyMedium, color = ink.copy(alpha = 0.8f), modifier = Modifier.weight(1f))
+        Text(value, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = ink)
     }
 }

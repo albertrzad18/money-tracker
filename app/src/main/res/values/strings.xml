@@ -35,14 +35,9 @@
     <string name="refreshing">Refreshing…</string>
 
     <!-- Portfolio -->
-    <string name="updated_at">Updated %1$s</string>
-    <string name="updated_at_failed">Updated %1$s · some prices failed</string>
     <string name="portfolio_empty_title">No purchases yet</string>
     <string name="portfolio_empty_body">Add a stock, ETF or cryptocurrency with the price you paid. The widget will show how each purchase is doing.</string>
     <string name="day_change">%1$s today</string>
-    <string name="average_price_weighted">Avg. price %1$s</string>
-    <string name="average_price_simple">Avg. of buy prices %1$s</string>
-    <string name="position_value">Value %1$s</string>
 
     <!-- Asset kinds -->
     <string name="kind_stock">Stock</string>
@@ -72,12 +67,11 @@
     <string name="field_alert_down">Drop alert, %</string>
     <string name="alerts_zero_hint">0 turns that alert off.</string>
     <string name="delete_lot_title">Delete purchase?</string>
-    <string name="delete_lot_body">The purchase will be removed for good.</string>
+    <string name="delete_lot_body">The purchase from %1$s will be removed for good.</string>
 
     <!-- Instrument -->
     <string name="section_open_lots">Purchases</string>
     <string name="section_sold_lots">Sold</string>
-    <string name="total_result">Total result</string>
     <string name="label_average_weighted">Average price (weighted)</string>
     <string name="label_average_simple">Average of buy prices</string>
     <string name="label_lots_count">Purchases</string>
@@ -93,8 +87,8 @@
     <string name="chart_no_data">No data for this period</string>
     <string name="chart_error">Could not load the chart</string>
     <string name="chart_price_description">Price chart in %1$s</string>
-    <string name="chart_crypto_limit">Crypto history is limited to the last 365 days (free CoinGecko API).</string>
-    <string name="chart_buy_lines_hint">Dashed lines mark your purchase prices. Touch the chart to read values.</string>
+    <string name="chart_crypto_limit">Crypto history is limited to the last 365 days.</string>
+    <string name="chart_buy_lines_hint">Dashed lines mark your purchase prices, the dotted one is the average. Touch the chart to read values.</string>
     <string name="sell_title">Sell purchase</string>
     <string name="sell_lot_summary">Bought on %1$s at %2$s</string>
     <string name="field_sell_date">Sale date</string>
@@ -105,7 +99,6 @@
     <!-- History -->
     <string name="history_empty_title">Nothing sold yet</string>
     <string name="history_empty_body">Sold purchases appear here with their realised result.</string>
-    <string name="history_line">%1$s @%2$s → %3$s @%4$s</string>
     <string name="realized_result">Realised result</string>
     <string name="total_in_pln">Total in PLN</string>
 
@@ -135,8 +128,8 @@
     <string name="settings_notifications_blocked">Notifications are blocked for this app.</string>
     <string name="settings_widget">Widget</string>
     <string name="settings_widget_theme">Theme</string>
-    <string name="settings_widget_opacity">Background opacity: %1$d%%</string>
-    <string name="settings_widget_instruments">Shown on the widget (order is shared with the app)</string>
+    <string name="settings_widget_opacity">Background opacity</string>
+    <string name="settings_widget_instruments">Shown on the widget</string>
     <string name="settings_widget_no_instruments">Add a purchase first.</string>
     <string name="theme_system">System</string>
     <string name="theme_light">Light</string>
@@ -154,4 +147,33 @@
     <string name="notification_channel_alerts_description">A purchase passed its rise or drop threshold</string>
     <string name="alert_up_text">Purchase from %1$s at %2$s is up more than %3$s%%</string>
     <string name="alert_down_text">Purchase from %1$s at %2$s is down more than %3$s%%</string>
+
+
+    <!-- Redesign 1b -->
+    <string name="snackbar_refreshed">Prices updated</string>
+    <string name="snackbar_sold">Sold · result %1$s</string>
+    <string name="snackbar_deleted">Purchase deleted</string>
+    <string name="snackbar_added">Added a purchase of %1$s</string>
+    <string name="snackbar_saved">Changes saved</string>
+    <string name="gain_since_purchase">%1$s since purchase</string>
+    <string name="average_short">avg %1$s</string>
+    <string name="instrument_result">result</string>
+    <string name="chart_touch_hint">Touch the chart to read values.</string>
+    <string name="price_preview_now">%1$s now</string>
+    <string name="kind_stock_plural">Stocks</string>
+    <string name="kind_etf_plural">ETFs</string>
+    <string name="kind_crypto_plural">Crypto</string>
+    <string name="settings_widget_order">Order is shared with the app</string>
+    <string name="settings_widget_preview">Widget preview</string>
+    <string name="settings_last_refresh_today">Last today, %1$s</string>
+    <string name="settings_last_refresh">Last %1$s</string>
+    <string name="refresh_partial">some prices failed</string>
+    <string name="action_refresh_now">Refresh now</string>
+    <string name="widget_title_time">Portfolio · %1$s</string>
+    <string name="snackbar_refresh_failed">Some prices could not be downloaded</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_hint">Language of the app and the widget. System follows the phone.</string>
+    <string name="language_polish">Polski</string>
+    <string name="language_english">English</string>
+    <string name="chart_buy_line_hint">The dashed line marks your purchase price. Touch the chart to read values.</string>
 </resources>

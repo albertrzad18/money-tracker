@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/organic-a06f65d1-20df-4415-b7ec-8ff8326bbc0d/styles.css">
+<script src="_ds/organic-a06f65d1-20df-4415-b7ec-8ff8326bbc0d/_ds_bundle.js"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="mt-data.js"></script>
+<style>body{margin:0;background:transparent}</style>
+</helmet>
+<div style="width:360px;height:780px;position:relative;overflow:hidden;background:{{ wall.bg }};font-family:{{ bodyFont }};color:{{ wall.ink }}">
+  <div style="position:absolute;width:420px;height:420px;border-radius:50%;left:-150px;top:330px;background:{{ wall.b1 }}"></div>
+  <div style="position:absolute;width:300px;height:300px;border-radius:50%;right:-120px;top:-60px;background:{{ wall.b2 }}"></div>
+  <div style="position:absolute;width:160px;height:160px;border-radius:50%;right:30px;bottom:150px;background:{{ wall.b3 }}"></div>
+
+  <div style="position:absolute;top:0;left:0;right:0;height:32px;display:flex;align-items:center;padding:0 18px 0 24px;font-size:13px;font-weight:600">
+    <span style="flex:1">14:32</span>
+    <div style="position:absolute;left:50%;top:10px;width:11px;height:11px;margin-left:-5.5px;border-radius:50%;background:#0d0c0b"></div>
+    <div style="display:flex;gap:5px;align-items:center"><span style="width:14px;height:14px;display:block">{{ I.signal }}</span><span style="width:15px;height:15px;display:block">{{ I.wifi }}</span><span style="width:18px;height:18px;display:block">{{ I.battery }}</span></div>
+  </div>
+
+  <div style="position:absolute;top:48px;left:16px;right:16px;display:flex;flex-direction:column;gap:16px">
+    <div style="font-size:13px;font-weight:600;padding-left:6px">Poniedziałek, 2 listopada</div>
+
+    <sc-if value="{{ l1 }}">
+      <dc-import name="MT Widget" font="{{ font }}" size="4x1" variant="{{ variant }}" theme="{{ theme }}" opacity="{{ opacity }}" hint-size="328px,72px"></dc-import>
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <dc-import name="MT Widget" font="{{ font }}" size="2x2" variant="{{ variant }}" theme="{{ theme }}" opacity="{{ opacity }}" hint-size="156px,156px"></dc-import>
+        <div style="flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 0;justify-items:center">
+          <sc-for list="{{ appsA }}" as="a" hint-placeholder-count="4">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:52px;height:52px;border-radius:50%;background:{{ a.bg }};display:flex;align-items:center;justify-content:center"><sc-if value="{{ a.mt }}"><svg viewBox="0 0 108 108" style="width:52px;height:52px"><path d="M32,70 L46,55 L57,64 L75,43" fill="none" stroke="#f9f4ed" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path><path d="M63,43 L75,43 L75,55" fill="none" stroke="#f9f4ed" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if></div><span style="font-size:11px;font-weight:600">{{ a.label }}</span></div>
+          </sc-for>
+        </div>
+      </div>
+      <dc-import name="MT Widget" font="{{ font }}" size="4x3" variant="{{ variant }}" theme="{{ theme }}" opacity="{{ opacity }}" hint-size="328px,240px"></dc-import>
+    </sc-if>
+
+    <sc-if value="{{ l2 }}">
+      <dc-import name="MT Widget" font="{{ font }}" size="4x2" variant="{{ variant }}" theme="{{ theme }}" opacity="{{ opacity }}" hint-size="328px,156px"></dc-import>
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <div style="flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 0;justify-items:center">
+          <sc-for list="{{ appsA }}" as="a" hint-placeholder-count="4">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:52px;height:52px;border-radius:50%;background:{{ a.bg }};display:flex;align-items:center;justify-content:center"><sc-if value="{{ a.mt }}"><svg viewBox="0 0 108 108" style="width:52px;height:52px"><path d="M32,70 L46,55 L57,64 L75,43" fill="none" stroke="#f9f4ed" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path><path d="M63,43 L75,43 L75,55" fill="none" stroke="#f9f4ed" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if></div><span style="font-size:11px;font-weight:600">{{ a.label }}</span></div>
+          </sc-for>
+        </div>
+        <dc-import name="MT Widget" font="{{ font }}" size="2x2" variant="{{ variant }}" theme="{{ theme }}" opacity="{{ opacity }}" hint-size="156px,156px"></dc-import>
+      </div>
+      <dc-import name="MT Widget" font="{{ font }}" size="4x1" variant="{{ variant }}" theme="{{ theme }}" opacity="{{ opacity }}" hint-size="328px,72px"></dc-import>
+    </sc-if>
+  </div>
+
+  <div style="position:absolute;left:16px;right:16px;bottom:96px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));justify-items:center">
+    <sc-for list="{{ dock }}" as="a" hint-placeholder-count="4"><div style="width:52px;height:52px;border-radius:50%;background:{{ a.bg }}"></div></sc-for>
+  </div>
+  <div style="position:absolute;left:16px;right:16px;bottom:30px;height:48px;border-radius:999px;background:{{ wall.search }};display:flex;align-items:center;gap:10px;padding:0 18px;font-size:14px;color:{{ wall.muted }}"><span style="width:18px;height:18px;display:block">{{ I.search }}</span>Szukaj</div>
+  <div style="position:absolute;left:50%;bottom:6px;width:108px;height:4px;margin-left:-54px;border-radius:999px;background:{{ wall.ink }};opacity:.5"></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:360,&quot;height&quot;:780},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;variant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;a&quot;,&quot;b&quot;,&quot;c&quot;],&quot;default&quot;:&quot;a&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;layout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;1&quot;,&quot;2&quot;],&quot;default&quot;:&quot;1&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;opacity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:5,&quot;default&quot;:88,&quot;tsType&quot;:&quot;number&quot;}}">
+class Component extends DCLogic {
+  state = { ready: !!(window.MT && window.lucide) };
+  componentDidMount() {
+    if (!this.state.ready) { let n = 0; this.t = setInterval(() => { if ((window.MT && window.lucide) || ++n > 80) { clearInterval(this.t); this.setState({ ready: true }); } }, 100); }
+  }
+  componentWillUnmount() { clearInterval(this.t); }
+  renderVals() {
+    const theme = this.props.theme ?? 'light', variant = this.props.variant ?? 'a', layout = this.props.layout ?? '1';
+    const dark = theme === 'dark';
+    const wall = dark
+      ? { bg: '#24211d', b1: '#3d472b', b2: '#643312', b3: '#474238', ink: '#f5ead8', muted: '#c0b6a5', search: 'rgba(245,234,216,.12)', icon: 'rgba(245,234,216,.16)' }
+      : { bg: '#e8d6ba', b1: '#ccdbb2', b2: '#ffc6a5', b3: '#f6a06b', ink: '#201e1d', muted: '#645c50', search: 'rgba(249,244,237,.7)', icon: 'rgba(249,244,237,.55)' };
+    const ic = { bg: wall.icon, mt: false };
+    const I = window.MT && window.lucide ? window.MT.icons(React, 2.5) : { signal: null, wifi: null, battery: null, search: null };
+    return {
+      wall, theme, variant, font: this.props.font ?? 'manrope', bodyFont: window.MT ? window.MT.fontVars(this.props.font)['--font-body'] : 'var(--font-body)', opacity: this.props.opacity ?? (dark ? 80 : 88), l1: layout === '1', l2: layout === '2', I,
+      appsA: [{ label: 'Money Tracker', bg: '#c67139', mt: true }, Object.assign({ label: 'Kalendarz' }, ic), Object.assign({ label: 'Zdjęcia' }, ic), Object.assign({ label: 'Mapy' }, ic)],
+      dock: [ic, ic, ic, ic],
+    };
+  }
+}
+</script>
+</body>
+</html>

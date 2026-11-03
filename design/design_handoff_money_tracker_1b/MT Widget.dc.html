@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/organic-a06f65d1-20df-4415-b7ec-8ff8326bbc0d/styles.css">
+<script src="_ds/organic-a06f65d1-20df-4415-b7ec-8ff8326bbc0d/_ds_bundle.js"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="mt-data.js"></script>
+<style>body{margin:0;background:transparent}</style>
+</helmet>
+<div style="{{ vars }}">
+<sc-if value="{{ ready }}" hint-placeholder-val="{{ false }}">
+<div style="width:{{ w }};height:{{ h }};background:{{ bg }};border-radius:{{ radius }};color:var(--color-text);font-family:var(--font-body);font-variant-numeric:tabular-nums;overflow:hidden;box-sizing:border-box;position:relative;-webkit-backdrop-filter:{{ blur }};backdrop-filter:{{ blur }}">
+
+<sc-if value="{{ is.s2x2a }}">
+<div style="height:100%;padding:16px;display:flex;flex-direction:column;box-sizing:border-box">
+  <div style="display:flex;align-items:center;justify-content:space-between">
+    <span style="font-size:12px;font-weight:700;color:var(--muted)">Portfel</span>
+    <span onClick="{{ refresh }}" style="width:16px;height:16px;color:var(--muted);cursor:pointer;transition:transform 1s cubic-bezier(.2,0,0,1);transform:{{ rot }}">{{ I.refresh }}</span>
+  </div>
+  <div style="flex:1"></div>
+  <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:23px;line-height:1.1;letter-spacing:-0.01em">{{ S.valueShort }}</div>
+  <div style="display:flex;margin-top:8px"><span style="padding:3px 10px;border-radius:999px;font-size:13px;font-weight:700;background:{{ S.bg }};color:{{ S.c }}">{{ S.pctStr }}</span></div>
+  <div style="font-size:11px;color:var(--muted);margin-top:10px">{{ S.gainShort }} · {{ updated }}</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ is.s2x2b }}">
+<div style="height:100%;padding:14px 14px 12px;display:flex;flex-direction:column;box-sizing:border-box">
+  <div style="display:flex;align-items:center;justify-content:space-between">
+    <span style="font-size:11px;font-weight:600;color:var(--muted)">Portfel · {{ updated }}</span>
+    <span onClick="{{ refresh }}" style="width:14px;height:14px;color:var(--muted);cursor:pointer;transition:transform 1s cubic-bezier(.2,0,0,1);transform:{{ rot }}">{{ I.refresh }}</span>
+  </div>
+  <div style="font-size:30px;font-weight:700;letter-spacing:-0.02em;margin-top:10px;color:{{ S.c }}">{{ S.pctStr }}</div>
+  <div style="font-size:13px;font-weight:600">{{ S.valueShort }}</div>
+  <div style="flex:1"></div>
+  <svg viewBox="0 0 128 30" preserveAspectRatio="none" style="width:100%;height:30px;display:block;overflow:visible"><path d="{{ spark }}" fill="none" stroke="var(--chart)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path></svg>
+</div>
+</sc-if>
+
+<sc-if value="{{ is.s2x2c }}">
+<div style="height:100%;padding:12px;display:flex;flex-direction:column;box-sizing:border-box;position:relative">
+  <span onClick="{{ refresh }}" style="position:absolute;top:14px;right:14px;width:15px;height:15px;color:var(--muted);cursor:pointer;transition:transform 1s cubic-bezier(.2,0,0,1);transform:{{ rot }}">{{ I.refresh }}</span>
+  <div style="width:92px;height:92px;border-radius:50%;background:var(--soft);color:var(--soft-ink);display:flex;flex-direction:column;align-items:center;justify-content:center">
+    <span style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:22px;line-height:1">{{ S.pctStr }}</span>
+  </div>
+  <div style="flex:1"></div>
+  <div style="font-size:15px;font-weight:700;padding-left:4px">{{ S.valueShort }}</div>
+  <div style="font-size:11px;color:var(--muted);padding-left:4px">{{ S.gainShort }} · {{ updated }}</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ is.s4x1a }}">
+<div style="height:100%;padding:0 12px 0 22px;display:flex;align-items:center;gap:12px;box-sizing:border-box">
+  <div style="flex:1;min-width:0">
+    <div style="font-size:11px;color:var(--muted);font-weight:600">Portfel · {{ updated }}</div>
+    <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:19px;line-height:1.2">{{ S.valuePlain }}</div>
+  </div>
+  <span style="padding:4px 12px;border-radius:999px;font-size:14px;font-weight:700;background:{{ S.bg }};color:{{ S.c }}">{{ S.pctStr }}</span>
+  <span onClick="{{ refresh }}" style="width:44px;height:44px;border-radius:50%;background:var(--inset);display:flex;align-items:center;justify-content:center;color:var(--muted);cursor:pointer;flex:none"><span style="width:18px;height:18px;display:block;transition:transform 1s cubic-bezier(.2,0,0,1);transform:{{ rot }}">{{ I.refresh }}</span></span>
+</div>
+</sc-if>
+
+<sc-if value="{{ is.s4x1b }}">
+<div style="height:100%;padding:0 16px 0 18px;display:flex;align-items:center;gap:16px;box-sizing:border-box">
+  <sc-for list="{{ top3 }}" as="p" hint-placeholder-count="3">
+    <div style="flex:1;min-width:0">
+      <div style="font-size:11px;color:var(--muted);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.sym }}</div>
+      <div style="font-size:16px;font-weight:700;color:{{ p.c }}">{{ p.pctStr }}</div>
+    </div>
+  </sc-for>
+  <span onClick="{{ refresh }}" style="width:16px;height:16px;color:var(--muted);cursor:pointer;flex:none;transition:transform 1s cubic-bezier(.2,0,0,1);transform:{{ rot }}">{{ I.refresh }}</span>
+</div>
+</sc-if>
+
+<sc-if value="{{ is.s4x1c }}">
+<div style="height:100%;padding:0 16px 0 10px;display:flex;align-items:center;gap:12px;box-sizing:border-box">
+  <div style="width:52px;height:52px;border-radius:50%;background:var(--soft);color:var(--soft-ink);display:flex;align-items:center;justify-content:center;flex:none;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:14px">{{ S.pctStr }}</div>
+  <div style="flex:1;min-width:0">
+    <div style="font-size:15px;font-weight:700">{{ S.valuePlain }}</div>
+    <div style="font-size:11px;color:var(--muted)">{{ S.gainShort }} od zakupu · {{ updated }}</div>
+  </div>
+  <span onClick="{{ refresh }}" style="width:16px;height:16px;color:var(--muted);cursor:pointer;flex:none;transition:transform 1s cubic-bezier(.2,0,0,1);transform:{{ rot }}">{{ I.refresh }}</span>
+</div>
+</sc-if>
+
+<sc-if value="{{ big }}">
+<div style="height:100%;display:flex;flex-direction:column;box-sizing:border-box;padding:{{ pad }}">
+  <div style="display:flex;align-items:center;gap:8px;padding:0 4px 8px">
+    <span style="flex:1;font-family:{{ titleFont }};font-size:{{ titleSize }};font-weight:{{ titleWeight }}">Portfel</span>
+    <span style="font-size:11px;color:var(--muted)">{{ updated }}</span>
+    <span onClick="{{ refresh }}" style="width:16px;height:16px;color:var(--muted);cursor:pointer;transition:transform 1s cubic-bezier(.2,0,0,1);transform:{{ rot }}">{{ I.refresh }}</span>
+  </div>
+
+  <sc-if value="{{ is.s4x2a }}">
+    <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:space-between">
+      <sc-for list="{{ top4 }}" as="p" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:10px;padding:0 4px;height:24px">
+          <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700">{{ p.sym }}</div></div>
+          <span style="font-size:12px;color:var(--muted)">{{ p.priceStr }}</span>
+          <span style="min-width:58px;text-align:center;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:700;background:{{ p.bg }};color:{{ p.c }}">{{ p.pctStr }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ is.s4x2b }}">
+    <div style="display:flex;flex-direction:column;gap:4px;padding:0 4px">
+      <sc-for list="{{ top4 }}" as="p" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:12px;height:22px">
+          <span style="width:64px;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.sym }}</span>
+          <div style="flex:1;height:6px;position:relative;border-radius:999px;background:var(--line)">
+            <div style="position:absolute;top:0;bottom:0;left:{{ p.barL }};width:{{ p.barW }};border-radius:999px;background:{{ p.c }}"></div>
+            <div style="position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--muted);opacity:.5"></div>
+          </div>
+          <span style="width:52px;text-align:right;font-size:13px;font-weight:700;color:{{ p.c }}">{{ p.pctStr }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ is.s4x2c }}">
+    <div style="flex:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px">
+      <sc-for list="{{ top4 }}" as="p" hint-placeholder-count="4">
+        <div style="border-radius:20px;background:{{ p.bg }};padding:10px 8px;display:flex;flex-direction:column;justify-content:space-between;min-width:0">
+          <span style="font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.sym }}</span>
+          <span style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:15px;color:{{ p.c }}">{{ p.pctStr }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ is.s4x3a }}">
+    <div style="flex:1;overflow:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:6px">
+      <sc-for list="{{ all }}" as="p" hint-placeholder-count="3">
+        <div style="background:var(--inset);border-radius:18px;padding:8px 12px">
+          <div style="display:flex;align-items:center;gap:8px"><span style="flex:1;font-size:13px;font-weight:700">{{ p.sym }}</span><span style="font-size:12px">{{ p.priceStr }}</span></div>
+          <sc-for list="{{ p.lots }}" as="l" hint-placeholder-count="1">
+            <div style="display:flex;align-items:center;gap:8px;margin-top:3px"><span style="flex:1;font-size:12px;color:var(--muted)">{{ l.shortDate }}  @{{ l.buyPlain }}</span><span style="font-size:13px;font-weight:700;color:{{ l.c }}">{{ l.pctStr }}</span></div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ is.s4x3b }}">
+    <div style="flex:1;overflow:auto;scrollbar-width:none;padding:0 4px">
+      <sc-for list="{{ all }}" as="p" hint-placeholder-count="3">
+        <div style="padding:5px 0 6px">
+          <div style="display:flex;align-items:baseline;gap:8px"><span style="flex:1;font-size:12px;font-weight:700">{{ p.sym }}</span><span style="font-size:12px;color:var(--muted)">{{ p.priceStr }}</span></div>
+          <sc-for list="{{ p.lots }}" as="l" hint-placeholder-count="1">
+            <div style="display:flex;align-items:center;gap:10px;height:20px">
+              <span style="width:104px;font-size:11px;color:var(--muted);white-space:nowrap">{{ l.shortDate }}  @{{ l.buyPlain }}</span>
+              <div style="flex:1;height:4px;position:relative;border-radius:999px;background:var(--line)"><div style="position:absolute;top:0;bottom:0;left:{{ l.barL }};width:{{ l.barW }};border-radius:999px;background:{{ l.c }}"></div></div>
+              <span style="width:50px;text-align:right;font-size:12px;font-weight:700;color:{{ l.c }}">{{ l.pctStr }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ is.s4x3c }}">
+    <div style="flex:1;overflow:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:10px;padding:0 4px">
+      <sc-for list="{{ all }}" as="p" hint-placeholder-count="3">
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <div style="display:flex;align-items:baseline;gap:8px"><span style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:14px;flex:1">{{ p.sym }}</span><span style="font-size:12px;color:var(--muted)">{{ p.priceStr }}</span></div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px">
+            <sc-for list="{{ p.lots }}" as="l" hint-placeholder-count="2">
+              <span style="display:flex;gap:6px;align-items:baseline;padding:4px 10px;border-radius:999px;background:{{ l.bg }};font-size:11px"><span style="color:var(--muted)">{{ l.shortDate }}</span><span style="font-weight:700;font-size:12px;color:{{ l.c }}">{{ l.pctStr }}</span></span>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+</div>
+</sc-if>
+
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:360,&quot;height&quot;:280},&quot;size&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;2x2&quot;,&quot;4x1&quot;,&quot;4x2&quot;,&quot;4x3&quot;],&quot;default&quot;:&quot;4x3&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;variant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;a&quot;,&quot;b&quot;,&quot;c&quot;],&quot;default&quot;:&quot;a&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;opacity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:5,&quot;default&quot;:92,&quot;tsType&quot;:&quot;number&quot;},&quot;updated&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { ready: !!(window.MT && window.lucide), turns: 0 };
+  componentDidMount() {
+    if (!this.state.ready) {
+      let n = 0;
+      this.t = setInterval(() => { if ((window.MT && window.lucide) || ++n > 80) { if (window.MT) { clearInterval(this.t); this.setState({ ready: true }); } } }, 100);
+    }
+  }
+  componentWillUnmount() { clearInterval(this.t); clearTimeout(this.r); }
+  renderVals() {
+    const size = this.props.size ?? '4x3', v = this.props.variant ?? 'a', theme = this.props.theme ?? 'light';
+    const op = this.props.opacity ?? 92;
+    const MT = window.MT;
+    if (!this.state.ready || !MT) return { ready: false, vars: {}, is: {} };
+    const dims = { '2x2': [156, 156], '4x1': [328, 72], '4x2': [328, 156], '4x3': [328, 240] }[size] || [328, 240];
+    const radius = v === 'b' ? '22px' : size === '4x1' && v !== 'b' ? '999px' : v === 'c' ? '32px' : '28px';
+    const is = {}; is['s' + size + v] = true;
+    const ps = MT.positions;
+    const big = size === '4x2' || size === '4x3';
+    const timeline = MT.timeline('1R').val;
+    return {
+      ready: true, vars: Object.assign({}, MT.THEMES[theme] || MT.THEMES.light, MT.fontVars(this.props.font)), is, big,
+      w: dims[0] + 'px', h: dims[1] + 'px', radius,
+      bg: `color-mix(in srgb, var(--w-bg) ${op}%, transparent)`, blur: op < 100 ? 'blur(14px)' : 'none',
+      pad: v === 'b' ? '12px 12px 10px' : '14px 12px 12px',
+      titleFont: v === 'b' ? 'var(--font-body)' : 'var(--font-heading)', titleSize: v === 'b' ? '13px' : '16px', titleWeight: v === 'b' ? '700' : 'var(--hw,400)',
+      I: MT.icons(React, 2.5), S: MT.summary, updated: this.props.updated ?? MT.updated,
+      top3: ps.slice(0, 3), top4: ps.slice(0, 4), all: ps,
+      spark: MT.chart(timeline, [], 128, 30).line,
+      rot: `rotate(${this.state.turns * 360}deg)`,
+      refresh: (e) => { e && e.stopPropagation && e.stopPropagation(); this.setState((s) => ({ turns: s.turns + 1 })); },
+    };
+  }
+}
+</script>
+</body>
+</html>

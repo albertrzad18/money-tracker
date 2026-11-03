@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/organic-a06f65d1-20df-4415-b7ec-8ff8326bbc0d/styles.css">
+<script src="_ds/organic-a06f65d1-20df-4415-b7ec-8ff8326bbc0d/_ds_bundle.js"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="mt-data.js"></script>
+<style>body{margin:0;background:transparent}a{color:#c67139}a:hover{color:#b2622d}input::placeholder{color:inherit;opacity:.5}input[type=range]{accent-color:#c67139}</style>
+</helmet>
+<div style="{{ vars }}">
+<div style="width:360px;height:780px;position:relative;overflow:hidden;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);font-variant-numeric:tabular-nums;font-size:14px;line-height:1.4;-webkit-tap-highlight-color:transparent;user-select:none">
+<sc-if value="{{ ready }}" hint-placeholder-val="{{ false }}">
+
+<div style="position:absolute;top:0;left:0;right:0;height:32px;display:flex;align-items:center;padding:0 18px 0 24px;font-size:13px;font-weight:600;z-index:60;pointer-events:none">
+  <span style="flex:1">14:32</span>
+  <div style="position:absolute;left:50%;top:10px;width:11px;height:11px;margin-left:-5.5px;border-radius:50%;background:#0d0c0b"></div>
+  <div style="display:flex;gap:5px;align-items:center"><span style="width:14px;height:14px;display:block">{{ I.signal }}</span><span style="width:15px;height:15px;display:block">{{ I.wifi }}</span><span style="width:18px;height:18px;display:block">{{ I.battery }}</span></div>
+</div>
+
+<div style="position:absolute;top:32px;left:0;right:0;bottom:0;transform:{{ baseT }};transition:transform 420ms cubic-bezier(.2,0,0,1)">
+
+<sc-if value="{{ mount.portfolio }}">
+<div onClick="{{ closeMenu }}" style="position:absolute;top:0;left:0;right:0;bottom:80px;overflow-y:auto;scrollbar-width:none;opacity:{{ L.portfolio.o }};transform:{{ L.portfolio.t }};pointer-events:{{ L.portfolio.pe }};transition:opacity 240ms ease, transform 360ms cubic-bezier(.2,0,0,1)">
+
+  <sc-if value="{{ isEmpty }}">
+  <div style="padding:20px 20px 0">
+    <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:30px;line-height:1.1">Portfel</div>
+  </div>
+  <div style="padding:72px 28px 0;display:flex;flex-direction:column;align-items:flex-start;gap:14px">
+    <div style="width:112px;height:112px;border-radius:50%;background:var(--soft);color:var(--soft-ink);display:flex;align-items:center;justify-content:center"><span style="width:44px;height:44px;display:block">{{ I.chart }}</span></div>
+    <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:26px;line-height:1.15;margin-top:8px;width:100%">Brak zakupów</div>
+    <div style="font-size:15px;color:var(--muted);text-wrap:pretty;max-width:290px;width:100%">Dodaj akcję, ETF lub kryptowalutę z ceną, po której kupiłeś. Widget pokaże wynik każdego zakupu.</div>
+    <div onClick="{{ openAdd }}" style="margin-top:10px;height:52px;padding:0 26px;border-radius:999px;background:var(--color-accent);color:var(--on-accent);display:flex;align-items:center;gap:8px;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:16px;cursor:pointer;transition:transform 160ms" style-active="transform:scale(.96)"><span style="width:20px;height:20px;display:block">{{ I.plus }}</span>Dodaj zakup</div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ show.pa }}">
+  <div style="padding:18px 20px 10px;display:flex;align-items:center;gap:12px">
+    <div style="flex:1">
+      <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:30px;line-height:1.1">Portfel</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:2px">Aktualizacja {{ st.updated }}</div>
+    </div>
+    <div onClick="{{ refresh }}" style="width:44px;height:44px;border-radius:50%;background:var(--color-surface);display:flex;align-items:center;justify-content:center;cursor:pointer" style-active="transform:scale(.94)"><span style="width:20px;height:20px;display:block;transition:transform 1.1s cubic-bezier(.2,0,0,1);transform:{{ rot }}">{{ I.refresh }}</span></div>
+  </div>
+  <div style="margin:6px 16px 0;border-radius:32px;background:var(--hero);color:var(--hero-ink);padding:20px 22px 22px;position:relative;overflow:hidden">
+    <div style="position:absolute;right:-46px;top:-56px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.07)"></div>
+    <div style="position:absolute;right:28px;bottom:-70px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.05)"></div>
+    <div style="font-size:13px;opacity:.85">Wartość portfela</div>
+    <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:34px;line-height:1.15;margin-top:4px">{{ S.valueStr }}</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:12px">
+      <span style="padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.16);font-weight:700;font-size:14px">{{ S.pctStr }}</span>
+      <span style="font-size:14px;opacity:.9">{{ S.gainPlain }} od zakupu</span>
+    </div>
+  </div>
+  <div style="padding:16px 16px 120px;display:flex;flex-direction:column;gap:12px">
+    <sc-for list="{{ P }}" as="p" hint-placeholder-count="3">
+      <div onClick="{{ p.open }}" style="background:var(--color-surface);border-radius:32px;padding:18px 18px 14px;cursor:pointer;transition:transform 180ms cubic-bezier(.2,0,0,1)" style-active="transform:scale(.985)">
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="flex:1;min-width:0">
+            <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:20px;line-height:1.15">{{ p.sym }}</div>
+            <div style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:16px;font-weight:700">{{ p.priceStr }}</div>
+            <div style="font-size:12px;font-weight:600;color:{{ p.dayC }}">{{ p.dayStr }}</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:14px">
+          <div style="flex:1;font-size:13px;color:var(--muted)">{{ p.avgLabel }} {{ p.avgStr }}</div>
+          <span style="padding:4px 12px;border-radius:999px;font-size:14px;font-weight:700;background:{{ p.bg }};color:{{ p.c }}">{{ p.pctStr }}</span>
+        </div>
+        <sc-if value="{{ p.hasValue }}">
+          <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+            <div style="flex:1;font-size:13px;color:var(--muted)">Wartość {{ p.valueStr }}</div>
+            <span style="font-size:13px;font-weight:600;color:{{ p.gainC }};padding-right:12px">{{ p.gainStr }}</span>
+          </div>
+        </sc-if>
+        <div style="background:var(--inset);border-radius:22px;padding:2px 14px;margin-top:14px">
+          <sc-for list="{{ p.lots }}" as="l" hint-placeholder-count="2">
+            <div style="display:flex;align-items:center;gap:10px;padding:9px 0">
+              <div style="flex:1;min-width:0">
+                <div style="font-size:14px;font-weight:600">{{ l.dateStr }}</div>
+                <div style="font-size:12px;color:var(--muted)">{{ l.atStr }}</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:14px;font-weight:700;color:{{ l.c }}">{{ l.pctStr }}</div>
+                <div style="font-size:12px;color:{{ l.c }}">{{ l.gainStr }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ show.pb }}">
+  <div style="padding:18px 20px 0;display:flex;align-items:center;gap:12px">
+    <div style="flex:1;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:22px">Portfel</div>
+    <span style="font-size:12px;color:var(--muted)">{{ st.updated }}</span>
+    <div onClick="{{ refresh }}" style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted)" style-hover="background:var(--color-surface)"><span style="width:18px;height:18px;display:block;transition:transform 1.1s cubic-bezier(.2,0,0,1);transform:{{ rot }}">{{ I.refresh }}</span></div>
+  </div>
+  <div style="padding:22px 20px 0">
+    <div style="font-size:13px;color:var(--muted)">Wartość portfela</div>
+    <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:40px;line-height:1.1;letter-spacing:-0.01em;margin-top:2px">{{ S.valuePlain }}</div>
+    <div style="display:flex;gap:8px;align-items:baseline;margin-top:8px;font-size:15px">
+      <span style="font-weight:700;color:{{ S.c }}">{{ S.pctStr }}</span>
+      <span style="color:var(--muted)">{{ S.gainPlain }} od zakupu</span>
+    </div>
+    <div style="display:flex;gap:3px;height:10px;margin-top:22px">
+      <sc-for list="{{ S.byInstrument }}" as="s" hint-placeholder-count="4"><div style="width:{{ s.w }};background:{{ s.color }};border-radius:999px"></div></sc-for>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px">
+      <sc-for list="{{ S.byInstrument }}" as="s" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:6px;font-size:12px"><span style="width:8px;height:8px;border-radius:50%;background:{{ s.color }}"></span><span>{{ s.label }}</span><span style="color:var(--muted)">{{ s.shareStr }}</span></div></sc-for>
+    </div>
+  </div>
+  <div style="padding:30px 20px 120px;display:flex;flex-direction:column;gap:30px">
+    <sc-for list="{{ P }}" as="p" hint-placeholder-count="3">
+      <div onClick="{{ p.open }}" style="cursor:pointer">
+        <div style="display:flex;align-items:flex-start;gap:12px">
+          <div style="flex:1;min-width:0">
+            <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:19px;line-height:1.15">{{ p.sym }}</div>
+            <div style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</div>
+          </div>
+          <div style="font-size:20px;font-weight:700;color:{{ p.c }}">{{ p.pctStr }}</div>
+        </div>
+        <div style="display:flex;gap:6px;font-size:12px;color:var(--muted);margin-top:6px;flex-wrap:wrap">
+          <span style="color:var(--color-text);font-weight:600">{{ p.priceStr }}</span><span style="color:{{ p.dayC }}">{{ p.dayStr }}</span><span>·</span><span>śr. {{ p.avgStr }}</span>
+        </div>
+        <div style="margin-top:10px;display:flex;flex-direction:column">
+          <sc-for list="{{ p.lots }}" as="l" hint-placeholder-count="2">
+            <div style="display:flex;align-items:center;gap:12px;height:30px">
+              <span style="width:132px;font-size:12px;white-space:nowrap"><span>{{ l.shortDate }}</span><span style="color:var(--muted)">  @{{ l.buyPlain }}</span></span>
+              <div style="flex:1;height:5px;position:relative;border-radius:999px;background:var(--line)">
+                <div style="position:absolute;top:0;bottom:0;left:{{ l.barL }};width:{{ l.barW }};border-radius:999px;background:{{ l.c }}"></div>
+              </div>
+              <span style="width:54px;text-align:right;font-size:13px;font-weight:700;color:{{ l.c }}">{{ l.pctStr }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ show.pc }}">
+  <div style="padding:18px 20px 6px;display:flex;align-items:center;gap:12px">
+    <div style="flex:1;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:30px;line-height:1.1">Portfel</div>
+    <div onClick="{{ refresh }}" style="width:44px;height:44px;border-radius:50%;background:var(--color-surface);display:flex;align-items:center;justify-content:center;cursor:pointer" style-active="transform:scale(.94)"><span style="width:20px;height:20px;display:block;transition:transform 1.1s cubic-bezier(.2,0,0,1);transform:{{ rot }}">{{ I.refresh }}</span></div>
+  </div>
+  <div style="padding:8px 20px 0;display:flex;align-items:center;gap:18px">
+    <div style="width:136px;height:136px;flex:none;border-radius:50%;background:var(--soft);color:var(--soft-ink);display:flex;flex-direction:column;align-items:center;justify-content:center">
+      <span style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:30px;line-height:1">{{ S.pctStr }}</span>
+      <span style="font-size:12px;margin-top:6px;opacity:.8">od zakupu</span>
+    </div>
+    <div style="min-width:0">
+      <div style="font-size:12px;color:var(--muted)">Wartość portfela</div>
+      <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:22px;line-height:1.2;margin-top:2px">{{ S.valueStr }}</div>
+      <div style="font-size:13px;font-weight:600;color:{{ S.gainC }};margin-top:4px">{{ S.gainPlain }}</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:8px">Aktualizacja {{ st.updated }}</div>
+    </div>
+  </div>
+  <div style="padding:22px 16px 110px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+    <sc-for list="{{ P }}" as="p" hint-placeholder-count="4">
+      <div onClick="{{ p.open }}" style="background:{{ p.bg }};border-radius:30px;padding:16px 16px 14px;min-height:156px;display:flex;flex-direction:column;cursor:pointer;transition:transform 180ms cubic-bezier(.2,0,0,1)" style-active="transform:scale(.97)">
+        <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:17px;line-height:1.15">{{ p.sym }}</div>
+        <div style="font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</div>
+        <div style="flex:1"></div>
+        <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:27px;line-height:1.1;color:{{ p.c }}">{{ p.pctStr }}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">{{ p.priceStr }} · <span style="color:{{ p.dayC }}">{{ p.dayPct }}</span></div>
+        <div style="display:flex;align-items:center;gap:4px;margin-top:10px">
+          <sc-for list="{{ p.dots }}" as="d" hint-placeholder-count="2"><span style="width:8px;height:8px;border-radius:50%;background:{{ d.c }}"></span></sc-for>
+          <span style="font-size:11px;color:var(--muted);margin-left:4px">{{ p.lotsLabel }}</span>
+        </div>
+      </div>
+    </sc-for>
+    <div onClick="{{ openAdd }}" style="background:var(--color-surface);border-radius:30px;min-height:156px;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:16px;gap:10px;cursor:pointer" style-active="transform:scale(.97)">
+      <div style="width:44px;height:44px;border-radius:50%;background:var(--color-accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center"><span style="width:22px;height:22px;display:block">{{ I.plus }}</span></div>
+      <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:16px">Dodaj zakup</div>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ mount.summary }}">
+<div style="position:absolute;top:0;left:0;right:0;bottom:80px;overflow-y:auto;scrollbar-width:none;opacity:{{ L.summary.o }};transform:{{ L.summary.t }};pointer-events:{{ L.summary.pe }};transition:opacity 240ms ease, transform 360ms cubic-bezier(.2,0,0,1)">
+  <div style="padding:18px 20px 10px;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:30px;line-height:1.1">Podsumowanie</div>
+  <sc-if value="{{ isEmpty }}">
+    <div style="padding:64px 28px 0;display:flex;flex-direction:column;align-items:flex-start;gap:14px">
+      <div style="width:112px;height:112px;border-radius:50%;background:var(--soft);color:var(--soft-ink);display:flex;align-items:center;justify-content:center"><span style="width:44px;height:44px;display:block">{{ I.pie }}</span></div>
+      <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:24px;line-height:1.15;margin-top:8px">Nie ma jeszcze czego podsumować</div>
+      <div style="font-size:15px;color:var(--muted);max-width:290px">Dodaj zakupy z ilością, żeby zobaczyć wartość portfela.</div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ notEmpty }}">
+  <div style="padding:6px 16px 32px;display:flex;flex-direction:column;gap:12px">
+    <div style="background:var(--color-surface);border-radius:32px;padding:20px">
+      <div style="font-size:13px;color:var(--muted)">Wartość portfela</div>
+      <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:2px">
+        <span style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:30px;line-height:1.15">{{ S.valueStr }}</span>
+        <span style="font-size:15px;font-weight:700;color:{{ S.c }}">{{ S.pctStr }}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:14px;font-size:14px">
+        <div style="display:flex"><span style="flex:1;color:var(--muted)">Zainwestowano</span><span>{{ S.costStr }}</span></div>
+        <div style="display:flex"><span style="flex:1;color:var(--muted)">Zysk / strata</span><span style="font-weight:600;color:{{ S.gainC }}">{{ S.gainStr }}</span></div>
+      </div>
+      <div style="font-size:12px;font-weight:700;color:var(--muted);margin-top:18px;letter-spacing:.02em">Według walut</div>
+      <div style="display:flex;flex-direction:column;gap:2px;margin-top:6px">
+        <sc-for list="{{ S.perCurrency }}" as="r" hint-placeholder-count="2">
+          <div style="display:flex;align-items:center;gap:8px;height:34px;padding:0 12px;border-radius:999px;background:var(--inset)">
+            <span style="width:36px;font-size:12px;font-weight:700">{{ r.cur }}</span>
+            <span style="flex:1;font-size:14px">{{ r.valueStr }}</span>
+            <span style="font-size:12px;color:{{ r.gainC }}">{{ r.gainStr }}</span>
+            <span style="width:48px;text-align:right;font-size:13px;font-weight:700;color:{{ r.c }}">{{ r.pctStr }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:12px;text-wrap:pretty">{{ S.fxNote }}</div>
+    </div>
+
+    <div style="background:var(--color-surface);border-radius:32px;padding:20px">
+      <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:19px">Struktura portfela</div>
+      <div style="display:flex;padding:4px;border-radius:999px;background:var(--inset);margin-top:12px">
+        <sc-for list="{{ allocTabs }}" as="t" hint-placeholder-count="2">
+          <div onClick="{{ t.onClick }}" style="flex:1;height:38px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;cursor:pointer;background:{{ t.bg }};color:{{ t.fg }};transition:background 220ms, color 220ms">{{ t.label }}</div>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;gap:18px;margin-top:18px">
+        <svg viewBox="0 0 36 36" style="width:124px;height:124px;flex:none;transform:rotate(0deg)">
+          <circle cx="18" cy="18" r="15.9155" fill="none" stroke="var(--inset)" stroke-width="5"></circle>
+          <sc-for list="{{ alloc }}" as="s" hint-placeholder-count="4"><circle cx="18" cy="18" r="15.9155" fill="none" stroke="{{ s.color }}" stroke-width="5" stroke-dasharray="{{ s.dash }}" stroke-dashoffset="{{ s.offset }}" stroke-linecap="round" style="transition:stroke-dasharray 500ms cubic-bezier(.2,0,0,1), stroke-dashoffset 500ms cubic-bezier(.2,0,0,1)"></circle></sc-for>
+        </svg>
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0">
+          <sc-for list="{{ alloc }}" as="s" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span style="width:10px;height:10px;border-radius:50%;flex:none;background:{{ s.color }}"></span><span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.label }}</span><span style="color:var(--muted)">{{ s.shareStr }}</span></div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--color-surface);border-radius:32px;padding:20px">
+      <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:19px">Wartość w czasie</div>
+      <div style="display:flex;gap:6px;margin-top:12px">
+        <sc-for list="{{ tlRanges }}" as="r" hint-placeholder-count="3">
+          <div onClick="{{ r.onClick }}" style="height:34px;padding:0 14px;border-radius:999px;display:flex;align-items:center;font-size:13px;font-weight:700;cursor:pointer;background:{{ r.bg }};color:{{ r.fg }};transition:background 200ms, color 200ms">{{ r.label }}</div>
+        </sc-for>
+      </div>
+      <div style="position:relative;height:170px;margin-top:14px">
+        <svg viewBox="0 0 296 170" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
+          <path d="{{ TL.area }}" fill="var(--chart-fill)"></path>
+          <path d="{{ TL.line2 }}" fill="none" stroke="var(--chart-2)" stroke-width="2" stroke-dasharray="5 5" vector-effect="non-scaling-stroke"></path>
+          <path d="{{ TL.line }}" fill="none" stroke="var(--chart)" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path>
+        </svg>
+        <span style="position:absolute;right:0;top:-4px;font-size:11px;color:var(--muted)">{{ TL.hiStr }}</span>
+        <span style="position:absolute;right:0;bottom:-4px;font-size:11px;color:var(--muted)">{{ TL.loStr }}</span>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:14px;font-size:13px">
+        <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:4px;border-radius:999px;background:var(--chart)"></span>Wartość</div>
+        <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:4px;border-radius:999px;background:var(--chart-2)"></span>Zainwestowano</div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:6px">W PLN po kursie NBP z każdego dnia.</div>
+    </div>
+
+    <div style="background:var(--soft);color:var(--soft-ink);border-radius:32px;padding:20px">
+      <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:19px">Zrealizowany wynik</div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:12px;font-size:14px">
+        <sc-for list="{{ S.realizedPer }}" as="r" hint-placeholder-count="2"><div style="display:flex"><span style="flex:1">{{ r.cur }}</span><span style="font-weight:700">{{ r.str }}</span></div></sc-for>
+        <div style="display:flex;padding-top:8px;margin-top:2px"><span style="flex:1;font-weight:600">Razem w PLN</span><span style="font-weight:700">{{ S.realizedPlnStr }}</span></div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--muted);padding:0 6px">Otwarte zakupy bez ilości ({{ S.withoutQty }}) są liczone tylko w procentach.</div>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ mount.history }}">
+<div style="position:absolute;top:0;left:0;right:0;bottom:80px;overflow-y:auto;scrollbar-width:none;opacity:{{ L.history.o }};transform:{{ L.history.t }};pointer-events:{{ L.history.pe }};transition:opacity 240ms ease, transform 360ms cubic-bezier(.2,0,0,1)">
+  <div style="padding:18px 20px 10px;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:30px;line-height:1.1">Historia</div>
+  <sc-if value="{{ isEmpty }}">
+    <div style="padding:64px 28px 0;display:flex;flex-direction:column;align-items:flex-start;gap:14px">
+      <div style="width:112px;height:112px;border-radius:50%;background:var(--ind);color:var(--ind-ink);display:flex;align-items:center;justify-content:center"><span style="width:44px;height:44px;display:block">{{ I.history }}</span></div>
+      <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:24px;line-height:1.15;margin-top:8px">Nic jeszcze nie sprzedano</div>
+      <div style="font-size:15px;color:var(--muted);max-width:290px">Sprzedane zakupy pojawią się tutaj ze zrealizowanym wynikiem.</div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ notEmpty }}">
+  <div style="padding:6px 16px 32px;display:flex;flex-direction:column;gap:10px">
+    <sc-for list="{{ R }}" as="r" hint-placeholder-count="3">
+      <div onClick="{{ r.open }}" style="background:var(--color-surface);border-radius:28px;padding:16px 18px;cursor:{{ r.cursor }}">
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="flex:1;min-width:0">
+            <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:18px;line-height:1.15">{{ r.sym }}</div>
+            <div style="font-size:12px;color:var(--muted)">{{ r.name }}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:15px;font-weight:700;color:{{ r.c }}">{{ r.pctStr }}</div>
+            <div style="font-size:12px;color:{{ r.c }}">{{ r.gainStr }}</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:13px">{{ r.datesStr }}</div>
+        <div style="font-size:12px;color:var(--muted)">{{ r.pricesStr }}</div>
+      </div>
+    </sc-for>
+    <div style="background:var(--soft);color:var(--soft-ink);border-radius:28px;padding:18px 20px;margin-top:4px">
+      <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:18px">Zrealizowany wynik</div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;font-size:14px">
+        <sc-for list="{{ S.realizedPer }}" as="r" hint-placeholder-count="2"><div style="display:flex"><span style="flex:1">{{ r.cur }}</span><span style="font-weight:700">{{ r.str }}</span></div></sc-for>
+        <div style="display:flex;padding-top:6px"><span style="flex:1;font-weight:600">Razem w PLN</span><span style="font-weight:700">{{ S.realizedPlnStr }}</span></div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ mount.settings }}">
+<div style="position:absolute;top:0;left:0;right:0;bottom:80px;overflow-y:auto;scrollbar-width:none;opacity:{{ L.settings.o }};transform:{{ L.settings.t }};pointer-events:{{ L.settings.pe }};transition:opacity 240ms ease, transform 360ms cubic-bezier(.2,0,0,1)">
+  <div style="padding:18px 20px 10px;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:30px;line-height:1.1">Ustawienia</div>
+  <div style="padding:6px 16px 32px;display:flex;flex-direction:column;gap:10px">
+    <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:18px;padding:8px 6px 0">Alerty</div>
+    <div style="background:var(--color-surface);border-radius:32px;padding:18px 20px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="flex:1"><div style="font-size:15px;font-weight:600">Alerty progowe</div><div style="font-size:12px;color:var(--muted)">Powiadomienie, gdy zakup wzrośnie lub spadnie poza próg</div></div>
+        <div onClick="{{ toggleAlerts }}" style="width:52px;height:32px;border-radius:999px;position:relative;flex:none;cursor:pointer;background:{{ swAlerts.bg }};transition:background 220ms"><div style="position:absolute;top:4px;left:{{ swAlerts.left }};width:24px;height:24px;border-radius:50%;background:var(--knob);box-shadow:var(--shadow-sm);transition:left 240ms cubic-bezier(.2,0,0,1)"></div></div>
+      </div>
+      <sc-if value="{{ st.alertsOn }}">
+        <div style="display:flex;gap:10px">
+          <div style="flex:1;min-width:0"><div style="font-size:12px;color:var(--muted);margin:0 0 5px 14px">Alert wzrostu, %</div><input value="{{ st.aUp }}" onChange="{{ onAUp }}" inputmode="decimal" style="width:100%;box-sizing:border-box;height:48px;padding:0 18px;border-radius:999px;border:1px solid var(--color-divider);background:var(--inset);color:var(--color-text);font:inherit;font-size:15px;outline:none"></div>
+          <div style="flex:1;min-width:0"><div style="font-size:12px;color:var(--muted);margin:0 0 5px 14px">Alert spadku, %</div><input value="{{ st.aDown }}" onChange="{{ onADown }}" inputmode="decimal" style="width:100%;box-sizing:border-box;height:48px;padding:0 18px;border-radius:999px;border:1px solid var(--color-divider);background:var(--inset);color:var(--color-text);font:inherit;font-size:15px;outline:none"></div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:-4px;padding-left:14px">0 wyłącza dany alert.</div>
+      </sc-if>
+    </div>
+
+    <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:18px;padding:12px 6px 0">Widget</div>
+    <div style="background:var(--color-surface);border-radius:32px;padding:16px 16px 18px;display:flex;flex-direction:column;gap:12px">
+      <div style="border-radius:24px;height:96px;position:relative;overflow:hidden;background:{{ wallBg }}">
+        <div style="position:absolute;right:-30px;top:-40px;width:130px;height:130px;border-radius:50%;background:{{ wallBlob }}"></div>
+        <div style="position:absolute;left:-20px;bottom:-60px;width:110px;height:110px;border-radius:50%;background:{{ wallBlob2 }}"></div>
+        <div style="position:absolute;left:12px;top:12px;transform:scale(.828);transform-origin:left top">
+          <dc-import name="MT Widget" font="{{ font }}" size="4x1" variant="{{ variant }}" theme="{{ wPreviewTheme }}" opacity="{{ st.wOpacity }}" updated="{{ st.updated }}" hint-size="328px,72px"></dc-import>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;padding-left:6px;margin-top:4px">Motyw</div>
+      <div style="display:flex;padding:4px;border-radius:999px;background:var(--inset)">
+        <sc-for list="{{ wThemes }}" as="t" hint-placeholder-count="3">
+          <div onClick="{{ t.onClick }}" style="flex:1;height:38px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;cursor:pointer;background:{{ t.bg }};color:{{ t.fg }};transition:background 220ms, color 220ms">{{ t.label }}</div>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;padding:6px 6px 0"><span style="flex:1;font-size:13px;font-weight:600">Krycie tła</span><span style="font-size:13px;color:var(--muted)">{{ st.wOpacity }}%</span></div>
+      <input type="range" min="0" max="100" step="10" value="{{ st.wOpacity }}" onChange="{{ onOpacity }}" style="width:100%;margin:0;height:28px">
+      <div style="font-size:13px;font-weight:600;padding:6px 6px 0">Widoczne na widgecie</div>
+      <div style="font-size:12px;color:var(--muted);padding:0 6px;margin-top:-8px">Kolejność wspólna z aplikacją</div>
+      <div style="display:flex;flex-direction:column;background:var(--inset);border-radius:24px;padding:4px 4px">
+        <sc-for list="{{ wItems }}" as="w" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:10px;height:56px;padding-left:12px">
+            <div onClick="{{ w.toggle }}" style="width:24px;height:24px;border-radius:8px;flex:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:{{ w.boxBg }};border:{{ w.boxBorder }};color:var(--on-accent);transition:background 180ms"><span style="width:16px;height:16px;display:block;opacity:{{ w.checkO }}">{{ I.check }}</span></div>
+            <div style="flex:1;min-width:0;opacity:{{ w.rowO }}"><div style="font-size:14px;font-weight:600">{{ w.sym }}</div><div style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ w.name }}</div></div>
+            <div onClick="{{ w.up }}" style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:{{ w.upO }}" style-hover="background:var(--color-surface)"><span style="width:18px;height:18px;display:block">{{ I.up }}</span></div>
+            <div onClick="{{ w.down }}" style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:{{ w.downO }}" style-hover="background:var(--color-surface)"><span style="width:18px;height:18px;display:block">{{ I.down }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:18px;padding:12px 6px 0">Odświeżanie</div>
+    <div style="background:var(--color-surface);border-radius:32px;padding:18px 20px;display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:14px;text-wrap:pretty">Kursy odświeżają się automatycznie co 30 minut, gdy telefon jest online. W weekendy kursy akcji są pomijane.</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:4px">
+        <span style="flex:1;font-size:13px;color:var(--muted)">Ostatnio dziś, {{ st.updated }}</span>
+        <div onClick="{{ refresh }}" style="height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--color-divider);display:flex;align-items:center;gap:8px;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:14px;cursor:pointer" style-active="transform:scale(.96)"><span style="width:16px;height:16px;display:block;transition:transform 1.1s cubic-bezier(.2,0,0,1);transform:{{ rot }}">{{ I.refresh }}</span>{{ refreshLabel }}</div>
+      </div>
+    </div>
+
+    <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:18px;padding:12px 6px 0">O aplikacji</div>
+    <div style="background:var(--color-surface);border-radius:32px;padding:18px 20px;display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:14px">Kursy: Yahoo Finance (akcje, ETF-y), CoinGecko (krypto). Kursy walut: NBP.</div>
+      <div style="font-size:12px;color:var(--muted);text-wrap:pretty">Yahoo Finance nie ma oficjalnego publicznego API, więc kursy akcji mogą bez ostrzeżenia przestać działać. Kursy mogą być opóźnione. To nie jest porada inwestycyjna.</div>
+      <div style="font-size:12px;color:var(--muted)">Wersja 1.0.0</div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<div onClick="{{ openAdd }}" style="position:absolute;right:16px;bottom:96px;height:56px;padding:0 22px 0 18px;border-radius:999px;background:var(--color-accent);color:var(--on-accent);display:flex;align-items:center;gap:8px;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:16px;box-shadow:var(--shadow-md);cursor:pointer;opacity:{{ fab.o }};transform:{{ fab.t }};pointer-events:{{ fab.pe }};transition:opacity 220ms, transform 320ms cubic-bezier(.2,0,0,1)" style-active="transform:scale(.95)"><span style="width:22px;height:22px;display:block">{{ I.plus }}</span>Dodaj zakup</div>
+
+<div style="position:absolute;left:0;right:0;bottom:0;height:80px;background:var(--color-surface);display:flex;padding:0 8px 14px;box-sizing:border-box">
+  <sc-for list="{{ nav }}" as="n" hint-placeholder-count="4">
+    <div onClick="{{ n.onClick }}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer">
+      <div style="width:60px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:{{ n.ind }};color:{{ n.fg }};transition:background 260ms cubic-bezier(.2,0,0,1)"><span style="width:21px;height:21px;display:block">{{ n.icon }}</span></div>
+      <span style="font-size:11.5px;font-weight:{{ n.weight }};color:{{ n.labelC }}">{{ n.label }}</span>
+    </div>
+  </sc-for>
+</div>
+</div>
+
+<sc-if value="{{ mount.detail }}">
+<div onClick="{{ closeMenu }}" style="position:absolute;top:32px;left:0;right:0;bottom:0;background:var(--color-bg);z-index:10;transform:{{ detailT }};transition:transform 420ms cubic-bezier(.2,0,0,1);box-shadow:{{ detailShadow }};display:flex;flex-direction:column">
+  <div style="height:64px;flex:none;display:flex;align-items:center;gap:6px;padding:0 8px">
+    <div onClick="{{ closeDetail }}" style="width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:var(--color-surface)"><span style="width:22px;height:22px;display:block">{{ I.back }}</span></div>
+    <div style="flex:1;min-width:0">
+      <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:20px;line-height:1.15">{{ D.sym }}</div>
+      <div style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ D.name }}</div>
+    </div>
+    <div onClick="{{ addToDetail }}" style="width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:var(--color-surface)"><span style="width:22px;height:22px;display:block">{{ I.plus }}</span></div>
+  </div>
+  <div ref="{{ setDRef }}" style="flex:1;overflow-y:auto;scrollbar-width:none">
+
+  <sc-if value="{{ show.da }}">
+  <div style="padding:4px 16px 40px;display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:baseline;gap:12px;padding:0 4px"><span style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:36px;line-height:1.1">{{ D.priceStr }}</span><span style="font-size:14px;font-weight:600;color:{{ D.dayC }}">{{ D.dayStr }}</span></div>
+    <div style="background:var(--color-surface);border-radius:32px;padding:14px 16px 16px">
+      <div style="display:flex;gap:4px">
+        <sc-for list="{{ ranges }}" as="r" hint-placeholder-count="5"><div onClick="{{ r.onClick }}" style="flex:1;height:34px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;cursor:pointer;background:{{ r.bg }};color:{{ r.fg }};transition:background 200ms, color 200ms">{{ r.label }}</div></sc-for>
+      </div>
+      <div onPointerMove="{{ chartMove }}" onPointerDown="{{ chartMove }}" onPointerLeave="{{ chartLeave }}" style="position:relative;height:190px;margin-top:16px;touch-action:none;cursor:crosshair">
+        <svg viewBox="0 0 328 190" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
+          <path d="{{ CH.area }}" fill="var(--chart-fill)" style="transition:d 420ms cubic-bezier(.2,0,0,1)"></path>
+          <sc-for list="{{ CH.refs }}" as="r" hint-placeholder-count="2"><line x1="0" x2="328" y1="{{ r.y }}" y2="{{ r.y }}" stroke="{{ r.c }}" stroke-width="1.5" stroke-dasharray="{{ r.dash }}" vector-effect="non-scaling-stroke"></line></sc-for>
+          <path d="{{ CH.line }}" fill="none" stroke="var(--chart)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" style="transition:d 420ms cubic-bezier(.2,0,0,1)"></path>
+        </svg>
+        <span style="position:absolute;right:0;top:-6px;font-size:11px;color:var(--muted)">{{ CH.hiStr }}</span>
+        <span style="position:absolute;right:0;bottom:-6px;font-size:11px;color:var(--muted)">{{ CH.loStr }}</span>
+        <sc-if value="{{ hasScrub }}">
+          <div style="position:absolute;top:0;bottom:0;left:{{ scrub.left }};width:1.5px;margin-left:-.75px;background:var(--color-text);opacity:.3"></div>
+          <div style="position:absolute;left:{{ scrub.left }};top:{{ scrub.top }};width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--chart);box-shadow:0 0 0 3px var(--color-surface)"></div>
+          <div style="position:absolute;top:-14px;left:{{ scrub.left }};transform:{{ scrub.tipT }};background:var(--color-text);color:var(--color-bg);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;white-space:nowrap">{{ scrub.v }} · {{ scrub.label }}</div>
+        </sc-if>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:14px;text-wrap:pretty">{{ chartHint }}</div>
+    </div>
+    <div style="background:var(--color-surface);border-radius:32px;padding:18px 20px">
+      <div style="display:flex;align-items:center"><span style="flex:1;font-size:15px;font-weight:700">Wynik łączny</span><span style="padding:4px 12px;border-radius:999px;font-size:15px;font-weight:700;background:{{ D.bg }};color:{{ D.c }}">{{ D.pctStr }}</span></div>
+      <div style="display:flex;flex-direction:column;gap:7px;margin-top:14px;font-size:14px">
+        <sc-for list="{{ stats }}" as="s" hint-placeholder-count="5"><div style="display:flex"><span style="flex:1;color:var(--muted)">{{ s.label }}</span><span style="font-weight:600;color:{{ s.c }}">{{ s.value }}</span></div></sc-for>
+      </div>
+    </div>
+    <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:18px;padding:8px 6px 0">Zakupy</div>
+    <div style="background:var(--color-surface);border-radius:32px;padding:6px 6px 6px 0">
+      <sc-for list="{{ DL }}" as="l" hint-placeholder-count="2">
+        <div style="display:flex;align-items:center;gap:6px;padding:8px 0 8px 18px;position:relative">
+          <div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:600">{{ l.dateStr }}</div><div style="font-size:12px;color:var(--muted)">{{ l.atStr }}</div></div>
+          <div style="text-align:right"><div style="font-size:15px;font-weight:700;color:{{ l.c }}">{{ l.pctStr }}</div><div style="font-size:12px;color:{{ l.c }}">{{ l.gainStr }}</div></div>
+          <div onClick="{{ l.more }}" style="width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted)" style-hover="background:var(--inset)"><span style="width:20px;height:20px;display:block">{{ I.more }}</span></div>
+          <sc-if value="{{ l.open }}">
+            <div style="position:absolute;right:8px;top:52px;z-index:5;min-width:184px;background:var(--color-bg);border-radius:22px;box-shadow:var(--shadow-lg);padding:6px">
+              <sc-for list="{{ l.actions }}" as="a" hint-placeholder-count="3"><div onClick="{{ a.onClick }}" style="height:44px;display:flex;align-items:center;gap:12px;padding:0 14px;border-radius:16px;cursor:pointer;font-size:14px;font-weight:600;color:{{ a.c }}" style-hover="background:var(--color-surface)"><span style="width:18px;height:18px;display:block">{{ a.icon }}</span>{{ a.label }}</div></sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <sc-if value="{{ hasSold }}">
+      <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:18px;padding:8px 6px 0">Sprzedane</div>
+      <div style="background:var(--color-surface);border-radius:32px;padding:6px 6px 6px 0">
+        <sc-for list="{{ DR }}" as="r" hint-placeholder-count="1">
+          <div style="display:flex;align-items:center;gap:6px;padding:8px 0 8px 18px">
+            <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600">{{ r.datesStr }}</div><div style="font-size:12px;color:var(--muted)">{{ r.pricesStr }}</div></div>
+            <div style="text-align:right"><div style="font-size:15px;font-weight:700;color:{{ r.c }}">{{ r.pctStr }}</div><div style="font-size:12px;color:{{ r.c }}">{{ r.gainStr }}</div></div>
+            <div style="width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted)"><span style="width:20px;height:20px;display:block">{{ I.more }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ show.db }}">
+  <div style="padding:4px 20px 40px;display:flex;flex-direction:column">
+    <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:38px;line-height:1.1">{{ D.priceStr }}</div>
+    <div style="display:flex;gap:8px;font-size:14px;margin-top:6px"><span style="font-weight:700;color:{{ D.dayC }}">{{ D.dayStr }}</span><span style="color:var(--muted)">·</span><span style="color:var(--muted)">wynik</span><span style="font-weight:700;color:{{ D.c }}">{{ D.pctStr }}</span></div>
+    <div onPointerMove="{{ chartMove }}" onPointerDown="{{ chartMove }}" onPointerLeave="{{ chartLeave }}" style="position:relative;height:200px;margin:30px 0 0;touch-action:none;cursor:crosshair">
+      <svg viewBox="0 0 328 190" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
+        <path d="{{ CH.area }}" fill="var(--chart-fill)" style="transition:d 420ms cubic-bezier(.2,0,0,1)"></path>
+        <sc-for list="{{ CH.refs }}" as="r" hint-placeholder-count="2"><line x1="0" x2="328" y1="{{ r.y }}" y2="{{ r.y }}" stroke="{{ r.c }}" stroke-width="1.5" stroke-dasharray="{{ r.dash }}" vector-effect="non-scaling-stroke"></line></sc-for>
+        <path d="{{ CH.line }}" fill="none" stroke="var(--chart)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" style="transition:d 420ms cubic-bezier(.2,0,0,1)"></path>
+      </svg>
+      <span style="position:absolute;right:0;top:-6px;font-size:11px;color:var(--muted)">{{ CH.hiStr }}</span>
+      <span style="position:absolute;right:0;bottom:-6px;font-size:11px;color:var(--muted)">{{ CH.loStr }}</span>
+      <sc-if value="{{ hasScrub }}">
+        <div style="position:absolute;top:0;bottom:0;left:{{ scrub.left }};width:1.5px;margin-left:-.75px;background:var(--color-text);opacity:.3"></div>
+        <div style="position:absolute;left:{{ scrub.left }};top:{{ scrub.top }};width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--chart);box-shadow:0 0 0 3px var(--color-bg)"></div>
+        <div style="position:absolute;top:-22px;left:{{ scrub.left }};transform:{{ scrub.tipT }};background:var(--color-text);color:var(--color-bg);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;white-space:nowrap">{{ scrub.v }} · {{ scrub.label }}</div>
+      </sc-if>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:18px">
+      <sc-for list="{{ ranges }}" as="r" hint-placeholder-count="5"><div onClick="{{ r.onClick }}" style="height:34px;min-width:50px;padding:0 10px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;cursor:pointer;background:{{ r.bgB }};color:{{ r.fgB }};transition:background 200ms, color 200ms">{{ r.label }}</div></sc-for>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-top:14px;text-wrap:pretty">{{ chartHint }}</div>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 16px;margin-top:30px">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="6"><div><div style="font-size:12px;color:var(--muted)">{{ s.label }}</div><div style="font-size:16px;font-weight:700;margin-top:2px;color:{{ s.c }}">{{ s.value }}</div></div></sc-for>
+    </div>
+    <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:19px;margin-top:36px">Zakupy</div>
+    <div style="display:flex;flex-direction:column;margin-top:8px">
+      <sc-for list="{{ DL }}" as="l" hint-placeholder-count="2">
+        <div style="padding:12px 0;position:relative">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:600">{{ l.dateStr }}</div><div style="font-size:12px;color:var(--muted)">{{ l.atStr }}</div></div>
+            <div style="text-align:right"><div style="font-size:16px;font-weight:700;color:{{ l.c }}">{{ l.pctStr }}</div><div style="font-size:12px;color:{{ l.c }}">{{ l.gainStr }}</div></div>
+            <div onClick="{{ l.more }}" style="width:40px;height:40px;margin-right:-10px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted)" style-hover="background:var(--color-surface)"><span style="width:20px;height:20px;display:block">{{ I.more }}</span></div>
+          </div>
+          <div style="height:5px;position:relative;border-radius:999px;background:var(--line);margin-top:10px">
+            <div style="position:absolute;top:0;bottom:0;left:{{ l.barL }};width:{{ l.barW }};border-radius:999px;background:{{ l.c }}"></div>
+            <div style="position:absolute;left:50%;top:-4px;bottom:-4px;width:1.5px;margin-left:-.75px;background:var(--muted);opacity:.5"></div>
+          </div>
+          <sc-if value="{{ l.open }}">
+            <div style="position:absolute;right:0;top:54px;z-index:5;min-width:184px;background:var(--color-surface);border-radius:22px;box-shadow:var(--shadow-lg);padding:6px">
+              <sc-for list="{{ l.actions }}" as="a" hint-placeholder-count="3"><div onClick="{{ a.onClick }}" style="height:44px;display:flex;align-items:center;gap:12px;padding:0 14px;border-radius:16px;cursor:pointer;font-size:14px;font-weight:600;color:{{ a.c }}" style-hover="background:var(--color-bg)"><span style="width:18px;height:18px;display:block">{{ a.icon }}</span>{{ a.label }}</div></sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <sc-if value="{{ hasSold }}">
+      <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:19px;margin-top:28px">Sprzedane</div>
+      <sc-for list="{{ DR }}" as="r" hint-placeholder-count="1">
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 0">
+          <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600">{{ r.datesStr }}</div><div style="font-size:12px;color:var(--muted)">{{ r.pricesStr }}</div></div>
+          <div style="text-align:right"><div style="font-size:16px;font-weight:700;color:{{ r.c }}">{{ r.pctStr }}</div><div style="font-size:12px;color:{{ r.c }}">{{ r.gainStr }}</div></div>
+        </div>
+      </sc-for>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ show.dc }}">
+  <div style="padding:4px 16px 40px;display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;align-items:center;gap:14px;padding:0 4px 6px">
+      <div style="flex:1"><div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:32px;line-height:1.1">{{ D.priceStr }}</div><div style="font-size:13px;font-weight:600;margin-top:4px;color:{{ D.dayC }}">{{ D.dayStr }}</div></div>
+      <div style="width:84px;height:84px;border-radius:50%;flex:none;background:{{ D.bg }};color:{{ D.c }};display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:18px;line-height:1">{{ D.pctStr }}</span><span style="font-size:10px;margin-top:4px;font-weight:600">wynik</span></div>
+    </div>
+    <div style="background:var(--color-surface);border-radius:32px;padding:16px">
+      <div onPointerMove="{{ chartMove }}" onPointerDown="{{ chartMove }}" onPointerLeave="{{ chartLeave }}" style="position:relative;height:170px;margin-top:14px;touch-action:none;cursor:crosshair">
+        <svg viewBox="0 0 328 190" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
+          <path d="{{ CH.area }}" fill="var(--chart-fill)" style="transition:d 420ms cubic-bezier(.2,0,0,1)"></path>
+          <sc-for list="{{ CH.refs }}" as="r" hint-placeholder-count="2"><line x1="0" x2="328" y1="{{ r.y }}" y2="{{ r.y }}" stroke="{{ r.c }}" stroke-width="1.5" stroke-dasharray="{{ r.dash }}" vector-effect="non-scaling-stroke"></line></sc-for>
+          <path d="{{ CH.line }}" fill="none" stroke="var(--chart)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" style="transition:d 420ms cubic-bezier(.2,0,0,1)"></path>
+        </svg>
+        <sc-if value="{{ hasScrub }}">
+          <div style="position:absolute;top:0;bottom:0;left:{{ scrub.left }};width:1.5px;margin-left:-.75px;background:var(--color-text);opacity:.3"></div>
+          <div style="position:absolute;left:{{ scrub.left }};top:{{ scrub.top }};width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--chart);box-shadow:0 0 0 3px var(--color-surface)"></div>
+          <div style="position:absolute;top:-22px;left:{{ scrub.left }};transform:{{ scrub.tipT }};background:var(--color-text);color:var(--color-bg);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;white-space:nowrap">{{ scrub.v }} · {{ scrub.label }}</div>
+        </sc-if>
+      </div>
+      <div style="display:flex;gap:4px;margin-top:16px;padding:4px;border-radius:999px;background:var(--inset)">
+        <sc-for list="{{ ranges }}" as="r" hint-placeholder-count="5"><div onClick="{{ r.onClick }}" style="flex:1;height:34px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;cursor:pointer;background:{{ r.bg }};color:{{ r.fg }};transition:background 200ms, color 200ms">{{ r.label }}</div></sc-for>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+      <sc-for list="{{ tiles }}" as="t" hint-placeholder-count="4"><div style="background:{{ t.bg }};border-radius:28px;padding:16px 16px 14px;min-height:84px;display:flex;flex-direction:column;justify-content:space-between"><div style="font-size:12px;color:var(--muted)">{{ t.label }}</div><div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:19px;line-height:1.2;color:{{ t.c }}">{{ t.value }}</div></div></sc-for>
+    </div>
+    <div style="font-size:12px;color:var(--muted);padding:2px 8px">{{ statsLine }}</div>
+    <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:18px;padding:10px 6px 0">Zakupy</div>
+    <sc-for list="{{ DL }}" as="l" hint-placeholder-count="2">
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 4px 8px 8px;border-radius:999px;background:var(--color-surface);position:relative">
+        <div style="width:48px;height:48px;border-radius:50%;flex:none;background:{{ l.bg }};color:{{ l.c }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">{{ l.pctShort }}</div>
+        <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600">{{ l.dateStr }}</div><div style="font-size:12px;color:var(--muted)">{{ l.atStr }}</div></div>
+        <div style="font-size:13px;font-weight:700;color:{{ l.c }}">{{ l.gainStr }}</div>
+        <div onClick="{{ l.more }}" style="width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted)" style-hover="background:var(--inset)"><span style="width:20px;height:20px;display:block">{{ I.more }}</span></div>
+        <sc-if value="{{ l.open }}">
+          <div style="position:absolute;right:8px;top:58px;z-index:5;min-width:184px;background:var(--color-bg);border-radius:22px;box-shadow:var(--shadow-lg);padding:6px">
+            <sc-for list="{{ l.actions }}" as="a" hint-placeholder-count="3"><div onClick="{{ a.onClick }}" style="height:44px;display:flex;align-items:center;gap:12px;padding:0 14px;border-radius:16px;cursor:pointer;font-size:14px;font-weight:600;color:{{ a.c }}" style-hover="background:var(--color-surface)"><span style="width:18px;height:18px;display:block">{{ a.icon }}</span>{{ a.label }}</div></sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+    <sc-if value="{{ hasSold }}">
+      <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:18px;padding:10px 6px 0">Sprzedane</div>
+      <sc-for list="{{ DR }}" as="r" hint-placeholder-count="1">
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 18px 8px 8px;border-radius:999px;background:var(--color-surface)">
+          <div style="width:48px;height:48px;border-radius:50%;flex:none;background:{{ r.bg }};color:{{ r.c }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">{{ r.pctShort }}</div>
+          <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600">{{ r.datesStr }}</div><div style="font-size:12px;color:var(--muted)">{{ r.pricesStr }}</div></div>
+          <div style="font-size:13px;font-weight:700;color:{{ r.c }}">{{ r.gainStr }}</div>
+        </div>
+      </sc-for>
+    </sc-if>
+  </div>
+  </sc-if>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ mount.editor }}">
+<div style="position:absolute;top:32px;left:0;right:0;bottom:0;background:var(--color-bg);z-index:20;transform:{{ editorT }};transition:transform 440ms cubic-bezier(.2,0,0,1);display:flex;flex-direction:column">
+  <div style="height:64px;flex:none;display:flex;align-items:center;gap:6px;padding:0 8px">
+    <div onClick="{{ editorBack }}" style="width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:var(--color-surface)"><span style="width:22px;height:22px;display:block">{{ I.back }}</span></div>
+    <div style="flex:1;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:21px">{{ editorTitle }}</div>
+    <sc-if value="{{ isEdit }}"><div onClick="{{ editorDelete }}" style="width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--down)" style-hover="background:var(--color-surface)"><span style="width:21px;height:21px;display:block">{{ I.trash }}</span></div></sc-if>
+  </div>
+  <div style="flex:1;overflow-y:auto;scrollbar-width:none">
+  <sc-if value="{{ isSearch }}">
+    <div style="padding:4px 16px 32px">
+      <div style="font-size:12px;color:var(--muted);margin:0 0 6px 18px">Akcja, ETF lub krypto</div>
+      <div style="height:52px;border-radius:999px;background:var(--color-surface);border:1.5px solid var(--color-accent);display:flex;align-items:center;gap:10px;padding:0 6px 0 18px">
+        <span style="width:20px;height:20px;display:block;color:var(--muted);flex:none">{{ I.search }}</span>
+        <input value="{{ ed.query }}" onChange="{{ onQuery }}" placeholder="np. PKN.PL, AAPL, VWCE, bitcoin" style="flex:1;min-width:0;height:100%;border:none;background:transparent;color:var(--color-text);font:inherit;font-size:15px;outline:none">
+        <sc-if value="{{ hasQuery }}"><div onClick="{{ clearQuery }}" style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted)"><span style="width:18px;height:18px;display:block">{{ I.x }}</span></div></sc-if>
+      </div>
+      <sc-if value="{{ noQuery }}"><div style="font-size:14px;color:var(--muted);padding:16px 18px 0;text-wrap:pretty">Wpisz nazwę lub ticker. Działają też tickery z XTB, np. PKN.PL, AAPL.US, CSPX.UK.</div></sc-if>
+      <sc-if value="{{ noResults }}"><div style="font-size:14px;color:var(--muted);padding:16px 18px 0">Nic nie znaleziono.</div></sc-if>
+      <sc-for list="{{ groups }}" as="g" hint-placeholder-count="1">
+        <div style="font-size:13px;font-weight:700;color:var(--sec);padding:22px 18px 6px">{{ g.title }}</div>
+        <sc-for list="{{ g.items }}" as="c" hint-placeholder-count="3">
+          <div onClick="{{ c.pick }}" style="display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:24px;cursor:pointer;transition:background 160ms" style-hover="background:var(--color-surface)">
+            <div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:700">{{ c.sym }}</div><div style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.name }}</div></div>
+            <span style="font-size:12px;color:var(--muted)">{{ c.meta }}</span>
+          </div>
+        </sc-for>
+      </sc-for>
+    </div>
+  </sc-if>
+  <sc-if value="{{ isForm }}">
+    <div style="padding:4px 16px 32px;display:flex;flex-direction:column;gap:16px">
+      <div style="background:var(--color-surface);border-radius:28px;padding:16px 20px;display:flex;align-items:center;gap:12px">
+        <div style="flex:1;min-width:0"><div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:19px;line-height:1.2">{{ cand.sym }}</div><div style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ cand.sub }}</div></div>
+        <span style="font-size:15px;font-weight:700">{{ cand.priceStr }}</span>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--muted);margin:0 0 6px 18px">Data zakupu</div>
+        <div style="height:52px;border-radius:999px;background:var(--color-surface);border:1px solid var(--color-divider);display:flex;align-items:center;padding:0 18px;font-size:15px;cursor:pointer"><span style="flex:1">{{ ed.date }}</span><span style="width:20px;height:20px;display:block;color:var(--muted)">{{ I.calendar }}</span></div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--muted);margin:0 0 6px 18px">Cena za sztukę ({{ cand.cur }})</div>
+        <input value="{{ ed.price }}" onChange="{{ onPrice }}" inputmode="decimal" placeholder="0,00" style="width:100%;box-sizing:border-box;height:52px;padding:0 18px;border-radius:999px;border:1px solid var(--color-divider);background:var(--color-surface);color:var(--color-text);font:inherit;font-size:15px;outline:none">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:2px 8px;margin:6px 6px 0 18px;min-height:32px">
+          <span style="flex:1;font-size:12px;color:var(--muted)">Bieżący kurs: {{ cand.priceStr }}</span>
+          <sc-if value="{{ priceBlank }}"><div onClick="{{ useCurrent }}" style="height:32px;padding:0 12px;border-radius:999px;display:flex;align-items:center;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:13px;color:var(--sec);cursor:pointer;white-space:nowrap;margin-left:-12px" style-hover="background:var(--color-surface)">Użyj bieżącego kursu</div></sc-if>
+          <sc-if value="{{ pricePreview }}"><span style="font-size:12px;font-weight:700;color:{{ previewC }}">{{ previewStr }} teraz</span></sc-if>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--muted);margin:0 0 6px 18px">Ilość (opcjonalnie)</div>
+        <input value="{{ ed.qty }}" onChange="{{ onQty }}" inputmode="decimal" placeholder="np. 10" style="width:100%;box-sizing:border-box;height:52px;padding:0 18px;border-radius:999px;border:1px solid var(--color-divider);background:var(--color-surface);color:var(--color-text);font:inherit;font-size:15px;outline:none">
+        <div style="font-size:12px;color:var(--muted);margin:6px 0 0 18px">Z ilością aplikacja pokaże też zysk w kwocie</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;padding:4px 6px 0">
+        <div style="flex:1"><div style="font-size:15px;font-weight:600">Własne progi alertów</div><div style="font-size:12px;color:var(--muted)">Domyślne: +10% / −10% (Ustawienia)</div></div>
+        <div onClick="{{ toggleCustom }}" style="width:52px;height:32px;border-radius:999px;position:relative;flex:none;cursor:pointer;background:{{ swCustom.bg }};transition:background 220ms"><div style="position:absolute;top:4px;left:{{ swCustom.left }};width:24px;height:24px;border-radius:50%;background:var(--knob);box-shadow:var(--shadow-sm);transition:left 240ms cubic-bezier(.2,0,0,1)"></div></div>
+      </div>
+      <sc-if value="{{ ed.custom }}">
+        <div style="display:flex;gap:10px">
+          <div style="flex:1;min-width:0"><div style="font-size:12px;color:var(--muted);margin:0 0 5px 14px">Alert wzrostu, %</div><input value="{{ ed.up }}" onChange="{{ onUp }}" inputmode="decimal" style="width:100%;box-sizing:border-box;height:48px;padding:0 18px;border-radius:999px;border:1px solid var(--color-divider);background:var(--color-surface);color:var(--color-text);font:inherit;font-size:15px;outline:none"></div>
+          <div style="flex:1;min-width:0"><div style="font-size:12px;color:var(--muted);margin:0 0 5px 14px">Alert spadku, %</div><input value="{{ ed.down }}" onChange="{{ onDown }}" inputmode="decimal" style="width:100%;box-sizing:border-box;height:48px;padding:0 18px;border-radius:999px;border:1px solid var(--color-divider);background:var(--color-surface);color:var(--color-text);font:inherit;font-size:15px;outline:none"></div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:-8px;padding-left:14px">0 wyłącza dany alert.</div>
+      </sc-if>
+      <div onClick="{{ save }}" style="height:54px;margin-top:8px;border-radius:999px;background:var(--color-accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:17px;cursor:pointer;opacity:{{ saveO }};transition:opacity 200ms, transform 160ms" style-active="transform:scale(.98)">Zapisz</div>
+    </div>
+  </sc-if>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ mount.sheet }}">
+<div onClick="{{ closeSheet }}" style="position:absolute;inset:0;z-index:30;background:var(--scrim);opacity:{{ sheetScrimO }};pointer-events:{{ sheetPe }};transition:opacity 320ms ease"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:31;background:var(--color-surface);border-radius:32px 32px 0 0;padding:10px 20px 28px;transform:{{ sheetT }};transition:transform 420ms cubic-bezier(.2,0,0,1);box-shadow:var(--shadow-lg)">
+  <div style="width:36px;height:4px;border-radius:999px;background:var(--muted);opacity:.4;margin:0 auto 16px"></div>
+  <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:24px;line-height:1.15">Sprzedaż</div>
+  <div style="font-size:14px;color:var(--muted);margin-top:4px">{{ sellSummary }}</div>
+  <div style="display:flex;flex-direction:column;gap:12px;margin-top:18px">
+    <div><div style="font-size:12px;color:var(--muted);margin:0 0 6px 18px">Data sprzedaży</div><div style="height:50px;border-radius:999px;background:var(--inset);border:1px solid var(--color-divider);display:flex;align-items:center;padding:0 18px;font-size:15px"><span style="flex:1">02.11.2026</span><span style="width:20px;height:20px;display:block;color:var(--muted)">{{ I.calendar }}</span></div></div>
+    <div><div style="font-size:12px;color:var(--muted);margin:0 0 6px 18px">Cena sprzedaży ({{ sellCur }})</div><input value="{{ st.sell.price }}" onChange="{{ onSellPrice }}" inputmode="decimal" style="width:100%;box-sizing:border-box;height:50px;padding:0 18px;border-radius:999px;border:1px solid var(--color-divider);background:var(--inset);color:var(--color-text);font:inherit;font-size:15px;outline:none"></div>
+    <sc-if value="{{ sellHasQty }}"><div><div style="font-size:12px;color:var(--muted);margin:0 0 6px 18px">Sprzedana ilość (maks. {{ sellMax }})</div><input value="{{ st.sell.qty }}" onChange="{{ onSellQty }}" inputmode="decimal" style="width:100%;box-sizing:border-box;height:50px;padding:0 18px;border-radius:999px;border:1px solid var(--color-divider);background:var(--inset);color:var(--color-text);font:inherit;font-size:15px;outline:none"></div></sc-if>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;margin-top:18px;padding:12px 12px 12px 18px;border-radius:999px;background:var(--inset)">
+    <span style="flex:1;font-size:15px;font-weight:600">Wynik</span>
+    <span style="font-size:13px;color:{{ sellC }}">{{ sellGain }}</span>
+    <span style="padding:4px 12px;border-radius:999px;font-size:15px;font-weight:700;background:{{ sellBg }};color:{{ sellC }}">{{ sellPct }}</span>
+  </div>
+  <div style="display:flex;gap:10px;margin-top:20px">
+    <div onClick="{{ closeSheet }}" style="flex:1;height:52px;border-radius:999px;border:1px solid var(--color-divider);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:16px;cursor:pointer" style-hover="background:var(--inset)">Anuluj</div>
+    <div onClick="{{ confirmSell }}" style="flex:1;height:52px;border-radius:999px;background:var(--color-accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:16px;cursor:pointer" style-active="transform:scale(.97)">Sprzedaj</div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ mount.dialog }}">
+<div onClick="{{ closeDialog }}" style="position:absolute;inset:0;z-index:40;background:var(--scrim);opacity:{{ dialogO }};pointer-events:{{ dialogPe }};transition:opacity 240ms ease;display:flex;align-items:center;justify-content:center;padding:24px">
+  <div onClick="{{ stop }}" style="width:100%;background:var(--color-surface);border-radius:32px;padding:24px;box-shadow:var(--shadow-lg);transform:{{ dialogT }};transition:transform 300ms cubic-bezier(.2,0,0,1)">
+    <div style="font-family:var(--font-heading);font-weight:var(--hw,400);font-size:22px">Usunąć zakup?</div>
+    <div style="font-size:14px;color:var(--muted);margin-top:8px">Zakup z {{ dialogDate }} zostanie usunięty na stałe.</div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:22px">
+      <div onClick="{{ closeDialog }}" style="height:44px;padding:0 18px;border-radius:999px;display:flex;align-items:center;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:15px;cursor:pointer" style-hover="background:var(--inset)">Anuluj</div>
+      <div onClick="{{ confirmDelete }}" style="height:44px;padding:0 20px;border-radius:999px;display:flex;align-items:center;font-family:var(--font-heading);font-weight:var(--hw,400);font-size:15px;cursor:pointer;background:var(--down-bg);color:var(--down)">Usuń</div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<div style="position:absolute;left:50%;bottom:{{ snackBottom }};z-index:45;transform:{{ snackT }};opacity:{{ snackO }};transition:opacity 220ms, transform 320ms cubic-bezier(.2,0,0,1);background:var(--color-text);color:var(--color-bg);border-radius:999px;padding:12px 20px;font-size:14px;font-weight:600;white-space:nowrap;pointer-events:none;box-shadow:var(--shadow-md)">{{ st.snackMsg }}</div>
+
+<div style="position:absolute;left:50%;bottom:6px;width:108px;height:4px;margin-left:-54px;border-radius:999px;background:var(--color-text);opacity:.4;z-index:60;pointer-events:none"></div>
+</sc-if>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:360,&quot;height&quot;:780},&quot;variant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;a&quot;,&quot;b&quot;,&quot;c&quot;],&quot;default&quot;:&quot;a&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;screen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;portfolio&quot;,&quot;instrument&quot;,&quot;scrub&quot;,&quot;menu&quot;,&quot;sell&quot;,&quot;delete&quot;,&quot;summary&quot;,&quot;history&quot;,&quot;settings&quot;,&quot;add-empty&quot;,&quot;add&quot;,&quot;add-form&quot;,&quot;edit&quot;,&quot;empty&quot;,&quot;empty-history&quot;,&quot;empty-summary&quot;],&quot;default&quot;:&quot;portfolio&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;interactive&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;empty&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = Object.assign({ ready: !!(window.MT && window.lucide) }, this.initFrom(this.props));
+
+  initFrom(p) {
+    const scr = p.screen || 'portfolio';
+    const s = {
+      tab: 'portfolio', detailOpen: false, detailId: 1, range: '6M', scrub: null, menu: null,
+      editorOpen: false, ed: { mode: 'add', step: 'search', cand: null, query: '', price: '', qty: '', custom: false, up: '15', down: '8', date: '02.11.2026', fromSearch: true },
+      sheetOpen: false, sheetLot: 11, sell: { price: '68,42', qty: '40' }, dialogOpen: false, dialogLot: 12,
+      byKind: false, tl: '1R', alertsOn: true, aUp: '10', aDown: '10', wTheme: 0, wOpacity: 90,
+      wList: [1, 2, 3, 4, 5], wOn: { 1: true, 2: true, 3: true, 4: true, 5: false },
+      turns: 0, refreshing: false, updated: '14:32', snackOn: false, snackMsg: '',
+    };
+    const MT = window.MT;
+    const cand = (sym) => MT && MT.candidates.find((c) => c.sym === sym);
+    if (['summary', 'history', 'settings'].includes(scr)) s.tab = scr;
+    if (scr === 'empty-history') s.tab = 'history';
+    if (scr === 'empty-summary') s.tab = 'summary';
+    if (['instrument', 'sell', 'menu', 'delete', 'scrub'].includes(scr)) s.detailOpen = true;
+    if (scr === 'sell') s.sheetOpen = true;
+    if (scr === 'menu') s.menu = 11;
+    if (scr === 'delete') s.dialogOpen = true;
+    if (scr === 'scrub') s.scrub = 52;
+    if (scr === 'add') { s.editorOpen = true; s.ed.query = 'pk'; }
+    if (scr === 'add-empty') s.editorOpen = true;
+    if (scr === 'add-form') { s.editorOpen = true; s.ed.step = 'form'; s.ed.cand = cand('PKN.PL'); }
+    if (scr === 'edit') { s.editorOpen = true; Object.assign(s.ed, { mode: 'edit', step: 'form', cand: cand('PKN.PL'), price: '58,10', qty: '40', date: '14.03.2026', custom: true, up: '20', down: '10', fromSearch: false }); }
+    return s;
+  }
+
+  setDRef = (el) => {
+    this.dEl = el;
+    if (el && this.props.screen === 'menu' && !this.scrolled) { this.scrolled = true; setTimeout(() => { el.scrollTop = 470; }, 80); }
+  };
+  componentDidMount() {
+    if (!this.state.ready) {
+      let n = 0;
+      this.t = setInterval(() => {
+        if ((window.MT && window.lucide) || ++n > 80) {
+          if (window.MT) { clearInterval(this.t); this.setState(Object.assign({ ready: true }, this.initFrom(this.props))); }
+        }
+      }, 100);
+    }
+  }
+  componentDidUpdate(prev) {
+    if (prev.screen !== this.props.screen || prev.empty !== this.props.empty) this.setState(this.initFrom(this.props));
+  }
+  componentWillUnmount() { clearInterval(this.t); clearTimeout(this.snackT); clearTimeout(this.refT); }
+
+  snack(msg) {
+    clearTimeout(this.snackT);
+    this.setState({ snackOn: true, snackMsg: msg });
+    this.snackT = setTimeout(() => this.setState({ snackOn: false }), 2200);
+  }
+  editable(v) { return String(+v.toFixed(8)).replace('.', ','); }
+
+  renderVals() {
+    const MT = window.MT;
+    if (!this.state.ready || !MT) return { ready: false, vars: {} };
+    const st = this.state, F = MT.fmt;
+    const v = this.props.variant ?? 'a';
+    const theme = this.props.theme ?? 'light';
+    const interactive = this.props.interactive ?? true;
+    const empty = !!this.props.empty || String(this.props.screen || '').startsWith('empty');
+    const I = MT.icons(React, 2.5);
+    const set = (o) => this.setState(o);
+
+    const tabs = ['portfolio', 'summary', 'history', 'settings'];
+    const L = {};
+    tabs.forEach((t) => { const a = st.tab === t; L[t] = { o: a ? 1 : 0, t: a ? 'translateY(0)' : 'translateY(12px)', pe: a ? 'auto' : 'none' }; });
+    const mount = {};
+    tabs.forEach((t) => { mount[t] = interactive || st.tab === t; });
+    mount.detail = interactive || st.detailOpen;
+    mount.editor = interactive || st.editorOpen;
+    mount.sheet = interactive || st.sheetOpen;
+    mount.dialog = interactive || st.dialogOpen;
+
+    const openDetail = (id) => set({ detailId: id, detailOpen: true, scrub: null, menu: null });
+    const P = empty ? [] : MT.positions.map((p) => Object.assign({}, p, { open: () => openDetail(p.id) }));
+    const openAdd = () => set({ editorOpen: true, ed: Object.assign({}, this.initFrom({}).ed) });
+
+    const D = MT.positions.find((p) => p.id === st.detailId) || MT.positions[0];
+    const pts = MT.series(D.inst, st.range);
+    const refs = D.lots.map((l) => ({ v: l.raw.price, c: l.c })).concat([{ v: D.avg, c: 'var(--muted)', dash: '1 5' }]);
+    const CH = MT.chart(pts, refs, 328, 190);
+    let scrub = null;
+    if (st.scrub != null && CH.pts[Math.min(st.scrub, CH.pts.length - 1)]) {
+      const q = CH.pts[Math.min(st.scrub, CH.pts.length - 1)];
+      const r = q.x / 328;
+      scrub = { left: q.left, top: q.top, v: F.money(q.v, D.cur), label: q.label, tipT: r < 0.28 ? 'translateX(-12px)' : r > 0.72 ? 'translateX(calc(-100% + 12px))' : 'translateX(-50%)' };
+    }
+    const chartMove = (e) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const idx = Math.round(ratio * (CH.pts.length - 1));
+      if (idx !== this.state.scrub) set({ scrub: idx });
+    };
+    const ranges = ['1T', '1M', '6M', '1R', 'MAX'].map((r) => {
+      const a = st.range === r;
+      return { label: r, onClick: (e) => { e.stopPropagation(); set({ range: r, scrub: null }); },
+        bg: a ? 'var(--color-accent)' : 'transparent', fg: a ? 'var(--on-accent)' : 'var(--muted)',
+        bgB: a ? 'var(--color-text)' : 'transparent', fgB: a ? 'var(--color-bg)' : 'var(--muted)' };
+    });
+    const stats = [
+      { label: D.avgLabelLong, value: D.avgStr, c: 'inherit' },
+      { label: 'Liczba zakupów', value: String(D.lotsCount), c: 'inherit' },
+    ];
+    if (D.qtyStr) stats.push({ label: 'Ilość', value: D.qtyStr, c: 'inherit' });
+    if (D.costStr) stats.push({ label: 'Zainwestowano', value: D.costStr, c: 'inherit' });
+    if (D.valueStr) stats.push({ label: 'Wartość', value: D.valueStr, c: 'inherit' });
+    if (D.gainStr) stats.push({ label: 'Zysk / strata', value: D.gainStr, c: D.gainC });
+    const tiles = [
+      { label: 'Wynik łączny', value: D.pctStr, c: D.c, bg: D.bg },
+      { label: 'Zysk / strata', value: D.gainStr || '—', c: D.gainC, bg: 'var(--color-surface)' },
+      { label: D.avgLabel, value: D.avgStr, c: 'inherit', bg: 'var(--color-surface)' },
+      { label: 'Wartość', value: D.valueStr || '—', c: 'inherit', bg: 'var(--color-surface)' },
+    ];
+    const statsLine = [D.lotsLabel, D.qtyStr ? 'ilość ' + D.qtyStr : null, D.costStr ? 'zainwestowano ' + D.costStr : null].filter(Boolean).join(' · ');
+    const short = (p) => (Math.abs(p) >= 10 ? F.pct(p).replace(/,\d%$/, '%') : F.pct(p));
+    const DL = D.lots.map((l) => Object.assign({}, l, {
+      open: st.menu === l.id, pctShort: short(l.pct),
+      more: (e) => { e.stopPropagation(); set({ menu: st.menu === l.id ? null : l.id }); },
+      actions: [
+        { label: 'Edytuj', icon: I.pencil, c: 'inherit', onClick: (e) => { e.stopPropagation(); set({ menu: null, editorOpen: true, ed: { mode: 'edit', step: 'form', cand: MT.candidates.find((c) => c.sym === D.sym) || { sym: D.sym, sub: D.name, priceStr: D.priceStr, cur: D.cur, price: D.inst.price }, price: this.editable(l.raw.price), qty: l.raw.qty != null ? this.editable(l.raw.qty) : '', custom: false, up: '15', down: '8', date: l.dateStr, fromSearch: false } }); } },
+        { label: 'Sprzedaj', icon: I.sell, c: 'inherit', onClick: (e) => { e.stopPropagation(); set({ menu: null, sheetOpen: true, sheetLot: l.id, sell: { price: this.editable(D.inst.price), qty: l.raw.qty != null ? this.editable(l.raw.qty) : '' } }); } },
+        { label: 'Usuń', icon: I.trash, c: 'var(--down)', onClick: (e) => { e.stopPropagation(); set({ menu: null, dialogOpen: true, dialogLot: l.id }); } },
+      ],
+    }));
+    const DR = D.realized.map((r) => Object.assign({}, r, { pctShort: short(r.pct) }));
+    const chartHint = 'Przerywane linie to ceny Twoich zakupów, kropkowana to średnia. Dotknij wykresu, żeby odczytać wartości.' + (D.kind === 'Krypto' && st.range === 'MAX' ? ' Historia krypto jest ograniczona do ostatnich 365 dni.' : '');
+
+    // Summary
+    const S = MT.summary;
+    const alloc = st.byKind ? S.byKind : S.byInstrument;
+    const allocTabs = [['Instrumenty', false], ['Typy', true]].map(([label, k]) => ({ label, onClick: () => set({ byKind: k }),
+      bg: st.byKind === k ? 'var(--color-accent)' : 'transparent', fg: st.byKind === k ? 'var(--on-accent)' : 'var(--muted)' }));
+    const tl = MT.timeline(st.tl);
+    const TL = MT.multiChart(tl.val, tl.inv, 296, 170);
+    const tlRanges = ['6M', '1R', 'MAX'].map((r) => ({ label: r, onClick: () => set({ tl: r }),
+      bg: st.tl === r ? 'var(--color-accent)' : 'transparent', fg: st.tl === r ? 'var(--on-accent)' : 'var(--muted)' }));
+    const R = empty ? [] : MT.realized.map((r) => { const ok = MT.positions.some((p) => p.id === r.instId); return Object.assign({}, r, { open: ok ? () => openDetail(r.instId) : undefined, cursor: ok ? 'pointer' : 'default' }); });
+
+    // Editor
+    const ed = st.ed;
+    const q = ed.query.trim().toLowerCase();
+    const matches = q ? MT.candidates.filter((c) => c.sym.toLowerCase().includes(q) || c.name.toLowerCase().includes(q)) : [];
+    const pick = (c) => set({ ed: Object.assign({}, ed, { step: 'form', cand: c, fromSearch: true }) });
+    const groups = [['sec', 'Akcje i ETF-y'], ['crypto', 'Kryptowaluty']].map(([g, title]) => ({ title, items: matches.filter((c) => c.group === g).map((c) => Object.assign({}, c, { pick: () => pick(c) })) })).filter((g) => g.items.length);
+    const cand = ed.cand || MT.candidates[0];
+    const priceN = F.parse(ed.price);
+    const previewPct = priceN ? (cand.price / priceN - 1) * 100 : null;
+    const upd = (k) => (e) => set({ ed: Object.assign({}, this.state.ed, { [k]: e.target.value }) });
+
+    // Sell
+    const sellLot = MT.positions.flatMap((p) => p.lots.map((l) => ({ l, p }))).find((x) => x.l.id === st.sheetLot) || { l: D.lots[0], p: D };
+    const sp = F.parse(st.sell.price), sq = F.parse(st.sell.qty);
+    const sPct = sp ? (sp / sellLot.l.raw.price - 1) * 100 : null;
+    const sGain = sp && sq ? (sp - sellLot.l.raw.price) * sq : null;
+    const dLot = MT.positions.flatMap((p) => p.lots).find((l) => l.id === st.dialogLot) || D.lots[0];
+
+    // Settings
+    const swOf = (on) => ({ bg: on ? 'var(--color-accent)' : 'var(--track-off)', left: on ? '24px' : '4px' });
+    const wThemes = ['Systemowy', 'Jasny', 'Ciemny'].map((label, i) => ({ label, onClick: () => set({ wTheme: i }),
+      bg: st.wTheme === i ? 'var(--color-accent)' : 'transparent', fg: st.wTheme === i ? 'var(--on-accent)' : 'var(--muted)' }));
+    const wItems = st.wList.map((id, i) => {
+      const p = MT.positions.find((x) => x.id === id), on = !!st.wOn[id];
+      const move = (d) => (e) => { e.stopPropagation(); const j = i + d; if (j < 0 || j >= st.wList.length) return; const a = st.wList.slice(); [a[i], a[j]] = [a[j], a[i]]; set({ wList: a }); };
+      return { sym: p.sym, name: p.name, toggle: () => set({ wOn: Object.assign({}, st.wOn, { [id]: !on }) }),
+        boxBg: on ? 'var(--color-accent)' : 'transparent', boxBorder: on ? '2px solid var(--color-accent)' : '2px solid var(--muted)', checkO: on ? 1 : 0, rowO: on ? 1 : 0.55,
+        up: move(-1), down: move(1), upO: i === 0 ? 0.3 : 1, downO: i === st.wList.length - 1 ? 0.3 : 1 };
+    });
+    const wPreviewTheme = st.wTheme === 0 ? theme : st.wTheme === 1 ? 'light' : 'dark';
+    const wall = theme === 'dark' ? ['#3d472b', '#56633f', '#643312'] : ['#ccdbb2', '#f6a06b', '#aebf92'];
+
+    const refresh = (e) => {
+      e && e.stopPropagation && e.stopPropagation();
+      if (this.state.refreshing) return;
+      set({ turns: st.turns + 1, refreshing: true });
+      clearTimeout(this.refT);
+      this.refT = setTimeout(() => { this.setState({ refreshing: false, updated: MT.clock() }); this.snack('Kursy zaktualizowane'); }, 1100);
+    };
+
+    const overlayOpen = st.detailOpen || st.editorOpen;
+    const nav = [['portfolio', 'Portfel', I.wallet], ['summary', 'Podsumowanie', I.pie], ['history', 'Historia', I.history], ['settings', 'Ustawienia', I.settings]].map(([k, label, icon]) => {
+      const a = st.tab === k;
+      return { label, icon, onClick: () => set({ tab: k, menu: null }), ind: a ? 'var(--ind)' : 'transparent', fg: a ? 'var(--ind-ink)' : 'var(--muted)', labelC: a ? 'var(--color-text)' : 'var(--muted)', weight: a ? 700 : 500 };
+    });
+    const fabOn = st.tab === 'portfolio' && !empty && v !== 'c';
+
+    return {
+      ready: true, vars: Object.assign({}, MT.THEMES[theme] || MT.THEMES.light, MT.fontVars(this.props.font)), font: this.props.font ?? 'manrope', I, st, S, P, L, mount, variant: v, setDRef: this.setDRef,
+      show: { pa: !empty && v === 'a', pb: !empty && v === 'b', pc: !empty && v === 'c', da: v === 'a', db: v === 'b', dc: v === 'c' },
+      isEmpty: empty, notEmpty: !empty,
+      rot: `rotate(${st.turns * 360}deg)`, refresh, refreshLabel: st.refreshing ? 'Odświeżanie…' : 'Odśwież teraz',
+      openAdd, closeMenu: () => { if (this.state.menu != null) set({ menu: null }); },
+      baseT: overlayOpen ? 'translateX(-56px)' : 'translateX(0)',
+      fab: { o: fabOn ? 1 : 0, t: fabOn ? 'scale(1)' : 'scale(.8) translateY(20px)', pe: fabOn ? 'auto' : 'none' },
+      nav,
+      detailT: st.detailOpen ? 'translateX(0)' : 'translateX(104%)', detailShadow: st.detailOpen ? '0 0 40px rgba(0,0,0,.18)' : 'none',
+      closeDetail: () => set({ detailOpen: false, menu: null }),
+      addToDetail: () => set({ editorOpen: true, ed: Object.assign({}, this.initFrom({}).ed, { step: 'form', cand: MT.candidates.find((c) => c.sym === D.sym) || { sym: D.sym, sub: D.name, priceStr: D.priceStr, cur: D.cur, price: D.inst.price }, fromSearch: false }) }),
+      D, CH, scrub: scrub || {}, hasScrub: !!scrub, chartMove, chartLeave: () => set({ scrub: null }), ranges, stats, tiles, statsLine, DL, DR, hasSold: DR.length > 0, chartHint,
+      alloc, allocTabs, TL, tlRanges, R,
+      editorT: st.editorOpen ? 'translateX(0)' : 'translateX(104%)', editorTitle: ed.mode === 'edit' ? 'Edytuj zakup' : 'Dodaj zakup', isEdit: ed.mode === 'edit',
+      editorBack: () => { if (ed.step === 'form' && ed.fromSearch && ed.mode === 'add') set({ ed: Object.assign({}, ed, { step: 'search' }) }); else set({ editorOpen: false }); },
+      editorDelete: () => set({ dialogOpen: true, dialogLot: 11 }),
+      isSearch: ed.step === 'search', isForm: ed.step === 'form', ed, cand, groups,
+      hasQuery: !!ed.query, noQuery: !q, noResults: !!q && matches.length === 0,
+      onQuery: upd('query'), clearQuery: () => set({ ed: Object.assign({}, ed, { query: '' }) }),
+      onPrice: upd('price'), onQty: upd('qty'), onUp: upd('up'), onDown: upd('down'),
+      priceBlank: !ed.price, pricePreview: previewPct != null, previewStr: F.pct(previewPct), previewC: F.C[F.tone(previewPct)],
+      useCurrent: () => set({ ed: Object.assign({}, ed, { price: this.editable(cand.price) }) }),
+      toggleCustom: () => set({ ed: Object.assign({}, ed, { custom: !ed.custom }) }), swCustom: swOf(ed.custom),
+      saveO: priceN ? 1 : 0.45,
+      save: () => { if (!priceN) return; set({ editorOpen: false }); this.snack(ed.mode === 'edit' ? 'Zmiany zapisane' : 'Dodano zakup ' + cand.sym); },
+      sheetT: st.sheetOpen ? 'translateY(0)' : 'translateY(105%)', sheetScrimO: st.sheetOpen ? 1 : 0, sheetPe: st.sheetOpen ? 'auto' : 'none',
+      closeSheet: () => set({ sheetOpen: false }),
+      sellSummary: 'Kupione ' + sellLot.l.dateStr + ' po ' + sellLot.l.buyStr, sellCur: sellLot.p.cur,
+      sellHasQty: sellLot.l.raw.qty != null, sellMax: sellLot.l.qtyStr,
+      onSellPrice: (e) => set({ sell: Object.assign({}, this.state.sell, { price: e.target.value }) }),
+      onSellQty: (e) => set({ sell: Object.assign({}, this.state.sell, { qty: e.target.value }) }),
+      sellPct: F.pct(sPct), sellGain: sGain != null ? F.signedMoney(sGain, sellLot.p.cur) : '', sellC: F.C[F.tone(sPct)], sellBg: F.BG[F.tone(sPct)],
+      confirmSell: () => { set({ sheetOpen: false }); this.snack('Sprzedano · wynik ' + F.pct(sPct)); },
+      dialogO: st.dialogOpen ? 1 : 0, dialogPe: st.dialogOpen ? 'auto' : 'none', dialogT: st.dialogOpen ? 'scale(1)' : 'scale(.94)',
+      dialogDate: dLot.dateStr, closeDialog: () => set({ dialogOpen: false }), stop: (e) => e.stopPropagation(),
+      confirmDelete: () => { set({ dialogOpen: false, editorOpen: false }); this.snack('Zakup usunięty'); },
+      swAlerts: swOf(st.alertsOn), toggleAlerts: () => set({ alertsOn: !st.alertsOn }),
+      onAUp: (e) => set({ aUp: e.target.value }), onADown: (e) => set({ aDown: e.target.value }),
+      wThemes, wItems, wPreviewTheme, onOpacity: (e) => set({ wOpacity: +e.target.value }),
+      wallBg: wall[0], wallBlob: wall[1], wallBlob2: wall[2],
+      snackO: st.snackOn ? 1 : 0, snackT: st.snackOn ? 'translateX(-50%) translateY(0)' : 'translateX(-50%) translateY(16px)',
+      snackBottom: overlayOpen ? '28px' : '96px',
+    };
+  }
+}
+</script>
+</body>
+</html>

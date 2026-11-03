@@ -57,12 +57,12 @@ class InstrumentViewModel @Inject constructor(
 ) : ViewModel() {
     private val route = savedStateHandle.toRoute<InstrumentRoute>()
     private val selectedCurrency = MutableStateFlow(route.currency)
-    private val chartRequest = MutableStateFlow(ChartRequest(ChartRange.MONTH, 0))
+    private val chartRequest = MutableStateFlow(ChartRequest(ChartRange.HALF_YEAR, 0))
 
     private data class ChartRequest(val range: ChartRange, val attempt: Int)
 
     val range: StateFlow<ChartRange> = chartRequest.map { it.range }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, ChartRange.MONTH)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, ChartRange.HALF_YEAR)
 
     val state: StateFlow<InstrumentUiState> = combine(
         portfolio.observeInstrument(route.instrumentId),

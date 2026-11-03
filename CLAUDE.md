@@ -14,6 +14,9 @@ UI is in Polish and English (`res/values-pl`, `res/values`).
 - Gradle version catalog: `gradle/libs.versions.toml` — add dependencies there, not inline.
 - Configuration cache and build cache are on (`gradle.properties`).
 - `local.properties` (SDK path) is git-ignored.
+- Release signing: `./gradlew assembleRelease` signs with `release.jks` + `keystore.properties` (both
+  git-ignored, keep a backup). Without them the release APK is unsigned.
+- UI design reference: `design/design_handoff_money_tracker_1b/` (variant „1b Spokojna lista”).
 
 ## Layout (`app/src/main/java/io/github/albertrzad18/moneytracker`)
 

@@ -35,14 +35,9 @@
     <string name="refreshing">Odświeżanie…</string>
 
     <!-- Portfolio -->
-    <string name="updated_at">Aktualizacja %1$s</string>
-    <string name="updated_at_failed">Aktualizacja %1$s · części kursów nie pobrano</string>
     <string name="portfolio_empty_title">Brak zakupów</string>
     <string name="portfolio_empty_body">Dodaj akcję, ETF lub kryptowalutę z ceną, po której kupiłeś. Widget pokaże wynik każdego zakupu.</string>
     <string name="day_change">%1$s dziś</string>
-    <string name="average_price_weighted">Śr. cena %1$s</string>
-    <string name="average_price_simple">Śr. cen zakupu %1$s</string>
-    <string name="position_value">Wartość %1$s</string>
 
     <!-- Asset kinds -->
     <string name="kind_stock">Akcja</string>
@@ -72,12 +67,11 @@
     <string name="field_alert_down">Alert spadku, %</string>
     <string name="alerts_zero_hint">0 wyłącza dany alert.</string>
     <string name="delete_lot_title">Usunąć zakup?</string>
-    <string name="delete_lot_body">Zakup zostanie usunięty na stałe.</string>
+    <string name="delete_lot_body">Zakup z %1$s zostanie usunięty na stałe.</string>
 
     <!-- Instrument -->
     <string name="section_open_lots">Zakupy</string>
     <string name="section_sold_lots">Sprzedane</string>
-    <string name="total_result">Wynik łączny</string>
     <string name="label_average_weighted">Średnia cena (ważona)</string>
     <string name="label_average_simple">Średnia cen zakupu</string>
     <string name="label_lots_count">Liczba zakupów</string>
@@ -93,8 +87,8 @@
     <string name="chart_no_data">Brak danych w tym okresie</string>
     <string name="chart_error">Nie udało się pobrać wykresu</string>
     <string name="chart_price_description">Wykres kursu w %1$s</string>
-    <string name="chart_crypto_limit">Historia krypto jest ograniczona do ostatnich 365 dni (darmowe API CoinGecko).</string>
-    <string name="chart_buy_lines_hint">Przerywane linie to ceny Twoich zakupów. Dotknij wykresu, żeby odczytać wartości.</string>
+    <string name="chart_crypto_limit">Historia krypto jest ograniczona do ostatnich 365 dni.</string>
+    <string name="chart_buy_lines_hint">Przerywane linie to ceny Twoich zakupów, kropkowana to średnia. Dotknij wykresu, żeby odczytać wartości.</string>
     <string name="sell_title">Sprzedaż</string>
     <string name="sell_lot_summary">Kupione %1$s po %2$s</string>
     <string name="field_sell_date">Data sprzedaży</string>
@@ -105,7 +99,6 @@
     <!-- History -->
     <string name="history_empty_title">Nic jeszcze nie sprzedano</string>
     <string name="history_empty_body">Sprzedane zakupy pojawią się tutaj ze zrealizowanym wynikiem.</string>
-    <string name="history_line">%1$s @%2$s → %3$s @%4$s</string>
     <string name="realized_result">Zrealizowany wynik</string>
     <string name="total_in_pln">Razem w PLN</string>
 
@@ -135,8 +128,8 @@
     <string name="settings_notifications_blocked">Powiadomienia dla tej aplikacji są zablokowane.</string>
     <string name="settings_widget">Widget</string>
     <string name="settings_widget_theme">Motyw</string>
-    <string name="settings_widget_opacity">Krycie tła: %1$d%%</string>
-    <string name="settings_widget_instruments">Widoczne na widgecie (kolejność wspólna z aplikacją)</string>
+    <string name="settings_widget_opacity">Krycie tła</string>
+    <string name="settings_widget_instruments">Widoczne na widgecie</string>
     <string name="settings_widget_no_instruments">Najpierw dodaj zakup.</string>
     <string name="theme_system">Systemowy</string>
     <string name="theme_light">Jasny</string>
@@ -154,4 +147,33 @@
     <string name="notification_channel_alerts_description">Zakup przekroczył próg wzrostu lub spadku</string>
     <string name="alert_up_text">Zakup z %1$s po %2$s zyskał ponad %3$s%%</string>
     <string name="alert_down_text">Zakup z %1$s po %2$s stracił ponad %3$s%%</string>
+
+
+    <!-- Redesign 1b -->
+    <string name="snackbar_refreshed">Kursy zaktualizowane</string>
+    <string name="snackbar_sold">Sprzedano · wynik %1$s</string>
+    <string name="snackbar_deleted">Zakup usunięty</string>
+    <string name="snackbar_added">Dodano zakup %1$s</string>
+    <string name="snackbar_saved">Zmiany zapisane</string>
+    <string name="gain_since_purchase">%1$s od zakupu</string>
+    <string name="average_short">śr. %1$s</string>
+    <string name="instrument_result">wynik</string>
+    <string name="chart_touch_hint">Dotknij wykresu, żeby odczytać wartości.</string>
+    <string name="price_preview_now">%1$s teraz</string>
+    <string name="kind_stock_plural">Akcje</string>
+    <string name="kind_etf_plural">ETF-y</string>
+    <string name="kind_crypto_plural">Kryptowaluty</string>
+    <string name="settings_widget_order">Kolejność wspólna z aplikacją</string>
+    <string name="settings_widget_preview">Podgląd widgetu</string>
+    <string name="settings_last_refresh_today">Ostatnio dziś, %1$s</string>
+    <string name="settings_last_refresh">Ostatnio %1$s</string>
+    <string name="refresh_partial">części kursów nie pobrano</string>
+    <string name="action_refresh_now">Odśwież teraz</string>
+    <string name="widget_title_time">Portfel · %1$s</string>
+    <string name="snackbar_refresh_failed">Nie udało się pobrać części kursów</string>
+    <string name="settings_language">Język</string>
+    <string name="settings_language_hint">Język aplikacji i widgetu. Systemowy używa języka telefonu.</string>
+    <string name="language_polish">Polski</string>
+    <string name="language_english">English</string>
+    <string name="chart_buy_line_hint">Przerywana linia to cena Twojego zakupu. Dotknij wykresu, żeby odczytać wartości.</string>
 </resources>
