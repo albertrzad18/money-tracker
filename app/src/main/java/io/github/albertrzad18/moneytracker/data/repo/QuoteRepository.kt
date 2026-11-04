@@ -10,6 +10,7 @@ import io.github.albertrzad18.moneytracker.data.remote.YahooApi
 import io.github.albertrzad18.moneytracker.data.remote.YahooMeta
 import io.github.albertrzad18.moneytracker.domain.CRYPTO_CURRENCIES
 import io.github.albertrzad18.moneytracker.domain.Calc
+import io.github.albertrzad18.moneytracker.domain.EtfAliases
 import io.github.albertrzad18.moneytracker.domain.InstrumentCandidate
 import io.github.albertrzad18.moneytracker.domain.MarketHours
 import io.github.albertrzad18.moneytracker.domain.ResolvedInstrument
@@ -54,11 +55,15 @@ class QuoteRepository @Inject constructor(
     suspend fun search(query: String): SearchResults = coroutineScope {
         val trimmed = query.trim()
         val securities = async { runCatchingCancellable { searchYahoo(XtbTickerMapper.toYahoo(trimmed) ?: trimmed) } }
+        val aliasEtfs = EtfAliases.symbolsFor(trimmed).map { symbol ->
+            async { runCatchingCancellable { searchYahoo(symbol).filter { it.symbol == symbol } }.getOrDefault(emptyList()) }
+        }
         val crypto = async { runCatchingCancellable { searchCrypto(trimmed) } }
         val securitiesResult = securities.await()
+        val aliasEtfResults = aliasEtfs.flatMap { it.await() }
         val cryptoResult = crypto.await()
         SearchResults(
-            securities = securitiesResult.getOrDefault(emptyList()),
+            securities = (aliasEtfResults + securitiesResult.getOrDefault(emptyList())).distinctBy { it.symbol },
             crypto = cryptoResult.getOrDefault(emptyList()),
             failed = securitiesResult.isFailure && cryptoResult.isFailure,
         )
