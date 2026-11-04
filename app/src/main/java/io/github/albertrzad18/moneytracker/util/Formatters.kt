@@ -81,6 +81,13 @@ object Formatters {
         else -> code
     }
 
+    /** Ticker and exchange suffix shown apart: "ETFBW20TR.WA" → ("ETFBW20TR", ".WA"), "BTC" → ("BTC", ""). */
+    fun symbolParts(symbol: String): Pair<String, String> {
+        val dot = symbol.lastIndexOf('.')
+        if (dot <= 0 || symbol.length - dot - 1 !in 1..3) return symbol to ""
+        return symbol.substring(0, dot) to symbol.substring(dot)
+    }
+
     fun date(date: LocalDate): String = pattern("ddMMyyyy").format(date)
 
     fun shortDate(date: LocalDate): String = pattern("ddMMyy").format(date)

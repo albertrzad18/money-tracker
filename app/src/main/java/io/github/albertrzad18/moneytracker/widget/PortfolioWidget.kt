@@ -41,6 +41,7 @@ import androidx.glance.layout.Column
 import androidx.glance.layout.ContentScale
 import androidx.glance.layout.Row
 import androidx.glance.layout.Spacer
+import androidx.glance.layout.fillMaxHeight
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
@@ -101,7 +102,7 @@ private data class WidgetData(
     val settings: AppSettings,
 )
 
-/** Layouts by size: 2×2 total, 4×1 strip, 4×2 bars, 4×3 list of purchases. */
+/** Layouts by size: 2×2 total, 4×1 row of tiles, 4×2 grid of tiles, 4×3 list of purchases. */
 private val SIZE_2X2 = DpSize(120.dp, 120.dp)
 private val SIZE_4X1 = DpSize(250.dp, 48.dp)
 private val SIZE_4X2 = DpSize(250.dp, 130.dp)
@@ -169,33 +170,49 @@ private class WidgetPalette(private val theme: WidgetTheme, opacityPercent: Int)
     val muted = pick(light.muted, dark.muted)
     val chart = pick(light.chart, dark.chart)
     val line = pick(light.line, dark.line)
-    val tick = pick(light.muted.copy(alpha = 0.5f), dark.muted.copy(alpha = 0.5f))
 
     fun tone(pct: BigDecimal?): ColorProvider = pick(light.tone(pct), dark.tone(pct))
+
+    fun tile(pct: BigDecimal?): GlanceTileColors {
+        val l = light.tile(pct)
+        val d = dark.tile(pct)
+        return GlanceTileColors(
+            background = pick(l.background.copy(alpha = alpha), d.background.copy(alpha = alpha)),
+            symbol = pick(l.symbol, d.symbol),
+            exchange = pick(l.symbol.copy(alpha = 0.6f), d.symbol.copy(alpha = 0.6f)),
+            value = pick(l.value, d.value),
+        )
+    }
 }
+
+private class GlanceTileColors(val background: ColorProvider, val symbol: ColorProvider, val exchange: ColorProvider, val value: ColorProvider)
 
 @Composable
 private fun WidgetBody(data: WidgetData) {
-    val context = LocalContext.current
     val size = LocalSize.current
     // LocalSize is the matched Responsive bucket; bars need the real width (portrait = min width).
     val reported = LocalAppWidgetOptions.current.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0)
     val width = if (reported > 0) reported.dp else size.width
     val colors = WidgetPalette(data.settings.widgetTheme, data.settings.widgetOpacity)
+    when {
+        // 4×1 and 4×2 have no widget background: every position is its own tile.
+        size.height < 100.dp -> TileStrip(data, colors, width)
+        size.width < 240.dp -> Card(colors) { Total(data, colors, width) }
+        size.height < 200.dp -> TileGrid(data, colors)
+        else -> Card(colors) { Purchases(data, colors, width) }
+    }
+}
+
+@Composable
+private fun Card(colors: WidgetPalette, content: @Composable () -> Unit) {
+    val context = LocalContext.current
     Box(
         modifier = GlanceModifier
             .fillMaxSize()
             .background(ImageProvider(R.drawable.widget_background), colorFilter = ColorFilter.tint(colors.background))
             .cornerRadius(22.dp)
             .clickable(actionStartActivity(MainActivity.launchIntent(context))),
-    ) {
-        when {
-            size.height < 100.dp -> Strip(data, colors, width)
-            size.width < 240.dp -> Total(data, colors, width)
-            size.height < 200.dp -> Bars(data, colors, DpSize(width, size.height))
-            else -> Purchases(data, colors, width)
-        }
-    }
+    ) { content() }
 }
 
 private fun textStyle(color: ColorProvider, size: TextUnit, weight: FontWeight = FontWeight.Normal, align: TextAlign = TextAlign.Start) =
@@ -276,22 +293,129 @@ private fun Total(data: WidgetData, colors: WidgetPalette, width: Dp) {
     }
 }
 
-/** 4×1: the first positions side by side, symbol and result. */
+/** Tap on any tile refreshes, as in the design; the 2×2 and 4×3 cards open the app. */
+private val refreshOnTap = actionRunCallback<RefreshAction>()
+
+private val TILE_GAP = 4.dp
+
+/** One rounded tile tinted by the result; a full color for moves of 10% or more. */
 @Composable
-private fun Strip(data: WidgetData, colors: WidgetPalette, width: Dp) {
-    if (data.positions.isEmpty()) return EmptyText(colors)
-    val count = ((width.value - 50f) / 80f).toInt().coerceIn(1, 3)
-    Row(
-        GlanceModifier.fillMaxSize().padding(start = 18.dp, end = 10.dp),
+private fun Tile(
+    colors: GlanceTileColors,
+    modifier: GlanceModifier,
+    horizontalPadding: Pair<Dp, Dp>,
+    content: @Composable () -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .background(ImageProvider(R.drawable.widget_tile), colorFilter = ColorFilter.tint(colors.background))
+            .cornerRadius(18.dp)
+            .padding(start = horizontalPadding.first, end = horizontalPadding.second)
+            .clickable(refreshOnTap),
         verticalAlignment = Alignment.CenterVertically,
+    ) { content() }
+}
+
+/** "+14,1" large and "%" small; an em dash when the result is unknown. */
+@Composable
+private fun TileResult(pct: BigDecimal?, color: ColorProvider, size: TextUnit, percentSize: TextUnit) {
+    val text = Formatters.pct(pct)
+    Row(verticalAlignment = Alignment.Bottom) {
+        Text(text.removeSuffix("%"), style = textStyle(color, size, FontWeight.Bold), maxLines = 1)
+        if (text.endsWith("%")) Text("%", style = textStyle(color, percentSize, FontWeight.Bold), maxLines = 1)
+    }
+}
+
+@Composable
+private fun EmptyTile(colors: WidgetPalette) {
+    val context = LocalContext.current
+    Box(
+        GlanceModifier
+            .fillMaxSize()
+            .background(ImageProvider(R.drawable.widget_tile), colorFilter = ColorFilter.tint(colors.background))
+            .cornerRadius(18.dp)
+            .padding(12.dp)
+            .clickable(actionStartActivity(MainActivity.launchIntent(context))),
+        contentAlignment = Alignment.Center,
     ) {
-        data.positions.take(count).forEach { position ->
-            Column(GlanceModifier.defaultWeight().padding(end = 8.dp).clickable(openInstrument(LocalContext.current, position))) {
-                Text(position.instrument.symbol, style = textStyle(colors.muted, 11.sp, FontWeight.Medium), maxLines = 1)
-                Text(Formatters.pct(position.pct), style = textStyle(colors.tone(position.pct), 16.sp, FontWeight.Bold), maxLines = 1)
+        Text(context.getString(R.string.widget_empty), style = textStyle(colors.muted, 13.sp, align = TextAlign.Center))
+    }
+}
+
+/**
+ * 4×1: a row of tiles, as many as fit. Each tile is as wide as its symbol or result needs and the
+ * spare width is shared equally, like `flex: 1 1 auto` in the design.
+ */
+@Composable
+private fun TileStrip(data: WidgetData, colors: WidgetPalette, width: Dp) {
+    if (data.positions.isEmpty()) return EmptyTile(colors)
+    val fontScale = LocalContext.current.resources.configuration.fontScale
+    fun natural(position: Position): Float {
+        val symbol = Formatters.symbolParts(position.instrument.symbol).first
+        val result = Formatters.pct(position.pct).removeSuffix("%")
+        return 16f + maxOf(symbol.length * 6.4f, result.length * 9f + 8f) * fontScale
+    }
+    val shown = mutableListOf<Pair<Position, Float>>()
+    var used = 0f
+    for (position in data.positions.take(MAX_STRIP_TILES)) {
+        val w = natural(position)
+        val next = used + w + if (shown.isEmpty()) 0f else TILE_GAP.value
+        if (shown.isNotEmpty() && next > width.value) break
+        shown += position to w
+        used = next
+    }
+    val spare = ((width.value - used) / shown.size).coerceAtLeast(0f)
+    Box(GlanceModifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Row(GlanceModifier.fillMaxWidth().height(58.dp)) {
+            shown.forEachIndexed { i, (position, w) ->
+                if (i > 0) Spacer(GlanceModifier.width(TILE_GAP))
+                val last = i == shown.lastIndex
+                val tile = colors.tile(position.pct)
+                val size = if (last) GlanceModifier.defaultWeight() else GlanceModifier.width((w + spare).dp)
+                Tile(tile, size.fillMaxHeight(), 9.dp to 7.dp) {
+                    Text(
+                        Formatters.symbolParts(position.instrument.symbol).first,
+                        style = textStyle(tile.symbol, 10.sp, FontWeight.Bold),
+                        maxLines = 1,
+                    )
+                    Spacer(GlanceModifier.height(4.dp))
+                    TileResult(position.pct, tile.value, 15.sp, 10.sp)
+                }
             }
         }
-        RefreshIcon(data.settings, colors, 16.dp)
+    }
+}
+
+// RemoteViews rows hold at most ten children: five tiles and four gaps.
+private const val MAX_STRIP_TILES = 5
+
+/** 4×2: the first four positions as a 2×2 grid of tiles. */
+@Composable
+private fun TileGrid(data: WidgetData, colors: WidgetPalette) {
+    if (data.positions.isEmpty()) return EmptyTile(colors)
+    val rows = data.positions.take(4).chunked(2)
+    Column(GlanceModifier.fillMaxSize()) {
+        rows.forEachIndexed { r, row ->
+            if (r > 0) Spacer(GlanceModifier.height(TILE_GAP))
+            Row(GlanceModifier.fillMaxWidth().defaultWeight()) {
+                row.forEachIndexed { i, position ->
+                    if (i > 0) Spacer(GlanceModifier.width(TILE_GAP))
+                    val tile = colors.tile(position.pct)
+                    val (symbol, exchange) = Formatters.symbolParts(position.instrument.symbol)
+                    Tile(tile, GlanceModifier.defaultWeight().fillMaxHeight(), 14.dp to 14.dp) {
+                        Row(verticalAlignment = Alignment.Bottom) {
+                            Text(symbol, style = textStyle(tile.symbol, 12.sp, FontWeight.Bold), maxLines = 1)
+                            if (exchange.isNotEmpty()) {
+                                Spacer(GlanceModifier.width(6.dp))
+                                Text(exchange, style = textStyle(tile.exchange, 11.sp, FontWeight.Medium), maxLines = 1)
+                            }
+                        }
+                        Spacer(GlanceModifier.height(5.dp))
+                        Text(Formatters.pct(position.pct), style = textStyle(tile.value, 24.sp, FontWeight.Bold), maxLines = 1)
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -307,35 +431,6 @@ private fun Header(settings: AppSettings, colors: WidgetPalette) {
         UpdatedText(settings, colors, prefix = false)
         Spacer(GlanceModifier.width(2.dp))
         RefreshIcon(settings, colors, 16.dp)
-    }
-}
-
-/** 4×2: up to four positions with a deviation bar each. */
-@Composable
-private fun Bars(data: WidgetData, colors: WidgetPalette, size: DpSize) {
-    Column(GlanceModifier.fillMaxSize().padding(start = 12.dp, top = 6.dp, end = 6.dp, bottom = 10.dp)) {
-        Header(data.settings, colors)
-        if (data.positions.isEmpty()) return@Column EmptyText(colors)
-        val rows = ((size.height.value - 50f) / 26f).toInt().coerceIn(1, 4)
-        // Width left for the bar after paddings, the symbol (64), the result (52) and the gaps.
-        val barWidth = size.width - 18.dp - 8.dp - 64.dp - 52.dp - 24.dp
-        data.positions.take(rows).forEach { position ->
-            Row(
-                GlanceModifier.fillMaxWidth().height(26.dp).padding(start = 4.dp, end = 6.dp).clickable(openInstrument(LocalContext.current, position)),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(position.instrument.symbol, style = textStyle(colors.text, 12.sp, FontWeight.Medium), maxLines = 1, modifier = GlanceModifier.width(64.dp))
-                Spacer(GlanceModifier.width(12.dp))
-                DeviationBar(position.pct, barWidth, 6.dp, colors, centerTick = true)
-                Spacer(GlanceModifier.width(12.dp))
-                Text(
-                    Formatters.pct(position.pct),
-                    style = textStyle(colors.tone(position.pct), 13.sp, FontWeight.Bold, TextAlign.End),
-                    maxLines = 1,
-                    modifier = GlanceModifier.width(52.dp),
-                )
-            }
-        }
     }
 }
 
@@ -381,7 +476,7 @@ private fun LotRow(result: LotResult, colors: WidgetPalette, barWidth: Dp) {
             modifier = GlanceModifier.width(104.dp),
         )
         Spacer(GlanceModifier.width(10.dp))
-        DeviationBar(result.pct, barWidth, 4.dp, colors, centerTick = false)
+        DeviationBar(result.pct, barWidth, 4.dp, colors)
         Spacer(GlanceModifier.width(10.dp))
         Text(
             Formatters.pct(result.pct),
@@ -394,14 +489,13 @@ private fun LotRow(result: LotResult, colors: WidgetPalette, barWidth: Dp) {
 
 /** Track with a fill growing from the middle: right for a gain, left for a loss (±30% fills a half). */
 @Composable
-private fun DeviationBar(pct: BigDecimal?, width: Dp, thickness: Dp, colors: WidgetPalette, centerTick: Boolean) {
+private fun DeviationBar(pct: BigDecimal?, width: Dp, thickness: Dp, colors: WidgetPalette) {
     val safeWidth = if (width < 24.dp) 24.dp else width
     val half = safeWidth / 2
     val fill = half * deviationFraction(pct)
     val gain = (pct?.signum() ?: 0) >= 0
     val tone = colors.tone(pct)
-    val height = if (centerTick) thickness + 6.dp else thickness
-    Box(GlanceModifier.width(safeWidth).height(height), contentAlignment = Alignment.Center) {
+    Box(GlanceModifier.width(safeWidth).height(thickness), contentAlignment = Alignment.Center) {
         Spacer(GlanceModifier.width(safeWidth).height(thickness).background(colors.line).cornerRadius(thickness / 2))
         Row(GlanceModifier.width(safeWidth).height(thickness)) {
             Box(GlanceModifier.width(half).height(thickness), contentAlignment = Alignment.CenterEnd) {
@@ -411,7 +505,6 @@ private fun DeviationBar(pct: BigDecimal?, width: Dp, thickness: Dp, colors: Wid
                 if (gain && fill > 0.dp) Spacer(GlanceModifier.width(fill).height(thickness).background(tone).cornerRadius(thickness / 2))
             }
         }
-        if (centerTick) Spacer(GlanceModifier.width(1.dp).height(height).background(colors.tick))
     }
 }
 

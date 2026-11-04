@@ -1,230 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Static 4×2 sample shown in the widget picker (API 31+). -->
+<!-- Static 4×2 sample shown in the widget picker (API 31+): a 2×2 grid of tiles tinted by the result. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="HardcodedText,NestedWeights,DisableBaselineAlignment,UselessLeaf,UseCompoundDrawables,UseAppTint"
+    tools:ignore="HardcodedText,NestedWeights,DisableBaselineAlignment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/widget_preview_background"
-    android:orientation="vertical"
-    android:paddingStart="16dp"
-    android:paddingTop="12dp"
-    android:paddingEnd="16dp"
-    android:paddingBottom="10dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingBottom="8dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
-        <TextView
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/widget_title"
-            android:textColor="@color/widget_text"
-            android:textSize="13sp"
-            android:textStyle="bold" />
+            android:background="@drawable/widget_preview_tile_gain"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp">
 
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:importantForAccessibility="no"
-            android:src="@drawable/ic_widget_refresh"
-            android:tint="@color/widget_muted" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="ETFBW20TR"
+                android:textColor="@color/widget_on_strong"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:maxLines="1"
+                android:text="+14,1%"
+                android:textColor="@color/widget_on_strong"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/widget_preview_tile_gain_container"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="MIL"
+                android:textColor="@color/widget_text"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:maxLines="1"
+                android:text="+3,2%"
+                android:textColor="@color/widget_gain"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="22dp"
-        android:layout_marginBottom="4dp"
-        android:gravity="center_vertical"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="4dp"
         android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="64dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:text="PKN.PL"
-            android:textColor="@color/widget_text"
-            android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="6dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/widget_preview_track"
-            android:orientation="horizontal">
+            android:background="@drawable/widget_preview_tile_loss_container"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp">
 
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"></FrameLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="BTC"
+                android:textColor="@color/widget_text"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-                <FrameLayout android:layout_width="40dp" android:layout_height="match_parent" android:layout_gravity="start" android:background="@drawable/widget_preview_gain" />
-            </FrameLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:maxLines="1"
+                android:text="−3,0%"
+                android:textColor="@color/widget_loss"
+                android:textSize="24sp"
+                android:textStyle="bold" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="52dp"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:maxLines="1"
-            android:text="+12,4%"
-            android:textColor="@color/widget_gain"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="22dp"
-        android:layout_marginBottom="4dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="64dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:text="AAPL.US"
-            android:textColor="@color/widget_text"
-            android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="6dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/widget_preview_track"
-            android:orientation="horizontal">
+            android:layout_marginStart="4dp"
+            android:background="@drawable/widget_preview_tile_loss"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp">
 
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"></FrameLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="ETH"
+                android:textColor="@color/widget_on_strong"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-                <FrameLayout android:layout_width="17dp" android:layout_height="match_parent" android:layout_gravity="start" android:background="@drawable/widget_preview_gain" />
-            </FrameLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:maxLines="1"
+                android:text="−30,4%"
+                android:textColor="@color/widget_on_strong"
+                android:textSize="24sp"
+                android:textStyle="bold" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="52dp"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:maxLines="1"
-            android:text="+5,1%"
-            android:textColor="@color/widget_gain"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="22dp"
-        android:layout_marginBottom="4dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="64dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:text="VWCE.DE"
-            android:textColor="@color/widget_text"
-            android:textSize="12sp" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="6dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_weight="1"
-            android:background="@drawable/widget_preview_track"
-            android:orientation="horizontal">
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"></FrameLayout>
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-                <FrameLayout android:layout_width="29dp" android:layout_height="match_parent" android:layout_gravity="start" android:background="@drawable/widget_preview_gain" />
-            </FrameLayout>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="52dp"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:maxLines="1"
-            android:text="+8,7%"
-            android:textColor="@color/widget_gain"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="22dp"
-        android:layout_marginBottom="4dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="64dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:text="BTC"
-            android:textColor="@color/widget_text"
-            android:textSize="12sp" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="6dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_weight="1"
-            android:background="@drawable/widget_preview_track"
-            android:orientation="horizontal">
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-                <FrameLayout android:layout_width="21dp" android:layout_height="match_parent" android:layout_gravity="end" android:background="@drawable/widget_preview_loss" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"></FrameLayout>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="52dp"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:maxLines="1"
-            android:text="−6,3%"
-            android:textColor="@color/widget_loss"
-            android:textSize="13sp"
-            android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

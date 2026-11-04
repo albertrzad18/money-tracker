@@ -155,11 +155,11 @@ Wspólne: tło widgetu (#f9f4ed / #262420) z kryciem z Ustawień (domyślnie ok.
 | Rozmiar | Makieta (dp) | Zawartość |
 |---|---|---|
 | 2×2 | 156×156 | padding 14/14/12. U góry „Portfel · HH:mm” 11/600 muted i ikona odświeżania. Wynik łączny % 30/700 w kolorze tonu, kwota 13/600. Na dole sparkline 30 dp wartości portfela z 1R (linia 2 dp w kolorze wykresu). |
-| 4×1 | 328×72 | padding 0/16/0/18. Trzy pierwsze pozycje obok siebie: symbol 11/600 muted i % 16/700 w kolorze tonu. Ikona odświeżania na końcu. |
-| 4×2 | 328×156 | padding 12/12/10. Nagłówek „Portfel” 13/700, godzina 11 muted, odświeżanie. Do 4 pozycji, wiersze 22 dp, gap 4: symbol (szer. 64, 12/600), pasek odchylenia 6 dp z kreską środka i % (szer. 52, 13/700). |
+| 4×1 | 328×58 | **Wariant 1a „Kafelki” (`Widget 1a.dc.html`)**: bez tła widgetu. Rząd kafelków (radius 18, gap 4), ile się zmieści (do 5), szerokość wg treści i reszta po równo. Symbol bez sufiksu giełdy 10/700 i wynik 15/800 z „%” 10/700. Kafelek: wynik ≥ 10% → pełny kolor zysku/straty z tekstem w kolorze tła, mniej → tło gainContainer/lossContainer, symbol w kolorze tekstu, wynik w kolorze tonu. Krycie z Ustawień dotyczy tła kafelków. |
+| 4×2 | 328×128 | **Wariant 1a**: bez tła widgetu. Siatka 2×2 (gap 4) z czterech pierwszych pozycji, kafelki radius 20 (w kodzie 18), padding poziomy 14. Symbol 12/700 + sufiks giełdy 11/600 (60% krycia) i wynik 24/800. Kolory jak w 4×1. |
 | 4×3 | 328×240 | jak 4×2 w nagłówku. Przewijana lista (LazyColumn) wszystkich pozycji: symbol 12/700 i cena 12 muted. Pod spodem każdy zakup w wierszu 20 dp: „dd.MM.yy  @cena” 11 muted (szer. 104), pasek odchylenia 4 dp, % 12/700. |
 
-Uwagi Glance: pasek odchylenia zrób jako `Row` z dwiema połówkami (`defaultWeight`) i `Box` o szerokości wyliczonej w dp, albo jako bitmapę. Sparkline narysuj na `Canvas` do `Bitmap`, a potem `Image`. Kliknięcie w widget otwiera aplikację, a w pozycję otwiera Instrument.
+Uwagi Glance: pasek odchylenia (4×3) zrób jako `Row` z dwiema połówkami (`defaultWeight`) i `Box` o szerokości wyliczonej w dp, albo jako bitmapę. Sparkline narysuj na `Canvas` do `Bitmap`, a potem `Image`. W 2×2 i 4×3 kliknięcie w widget otwiera aplikację, a w pozycję otwiera Instrument. W 4×1 i 4×2 dotknięcie dowolnego kafelka odświeża kursy (makieta: „Odświeżanie: dotknięcie dowolnej karty”).
 
 Kolejność i widoczność pozycji na widgecie pochodzą z Ustawień, tak jak dziś.
 
@@ -177,6 +177,7 @@ Formatowanie liczb jak w istniejącym `Formatters.kt` (spacja nierozdzielająca 
 - `Prototyp 1b.dc.html`: punkt wejścia (interaktywne telefony jasny i ciemny, pulpit z widgetami, wszystkie ekrany).
 - `MT App.dc.html`: wszystkie ekrany aplikacji. Wariant 1b to bloki `show.pb` (Portfel) i `show.db` (Instrument); reszta ekranów jest wspólna.
 - `MT Widget.dc.html`: widgety. Wariant 1b to bloki `s2x2b`, `s4x1b`, `s4x2b`, `s4x3b`.
+- `Widget 1a.dc.html`: obowiązujący wygląd 4×1 i 4×2 (kafelki). `Widget nowe wersje.dc.html`: porównanie czterech kierunków (1a–1d), z których wybrano 1a.
 - `MT Home.dc.html`: makieta pulpitu.
 - `mt-data.js`: dane przykładowe, formatery, generowanie wykresów, tokeny motywów (`THEMES`).
 - `_ds/…/styles.css`: tokeny systemu Organic (źródło palety).

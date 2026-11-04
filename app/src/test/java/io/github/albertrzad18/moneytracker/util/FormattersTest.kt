@@ -51,4 +51,13 @@ class FormattersTest {
         assertEquals("128,5", text)
         assertEquals(0, BigDecimal("128.5").compareTo(Formatters.parseDecimal(text)))
     }
+
+    @Test
+    fun `symbol splits off a short exchange suffix`() {
+        assertEquals("ETFBW20TR" to ".WA", Formatters.symbolParts("ETFBW20TR.WA"))
+        assertEquals("CNDX" to ".L", Formatters.symbolParts("CNDX.L"))
+        assertEquals("BTC" to "", Formatters.symbolParts("BTC"))
+        assertEquals("BRK-B" to "", Formatters.symbolParts("BRK-B"))
+        assertEquals(".WA" to "", Formatters.symbolParts(".WA"))
+    }
 }

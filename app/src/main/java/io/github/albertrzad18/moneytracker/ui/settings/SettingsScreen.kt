@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -380,41 +381,64 @@ private fun WidgetPreview(positions: List<Position>, theme: WidgetTheme, opacity
     ) {
         Box(Modifier.align(Alignment.TopEnd).offset(x = 30.dp, y = (-40).dp).size(130.dp).clip(CircleShape).background(wall[1]))
         Box(Modifier.align(Alignment.BottomStart).offset(x = (-20).dp, y = 60.dp).size(110.dp).clip(CircleShape).background(wall[2]))
+        // The 4×1 widget: a row of tiles tinted by the result, with no widget background.
         Row(
             Modifier
-                .padding(start = 12.dp, top = 12.dp)
+                .padding(start = 12.dp, top = 19.dp)
                 .wrapContentSize(Alignment.TopStart, unbounded = true)
-                .requiredSize(328.dp, 72.dp)
+                .requiredSize(328.dp, 58.dp)
                 .graphicsLayer {
                     scaleX = 0.828f
                     scaleY = 0.828f
                     transformOrigin = TransformOrigin(0f, 0f)
-                }
-                .clip(androidx.compose.foundation.shape.RoundedCornerShape(22.dp))
-                .background(colors.background.copy(alpha = opacityPercent / 100f))
-                .padding(start = 18.dp, end = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                },
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            positions.take(3).forEach { position ->
-                Column(Modifier.weight(1f)) {
+            val tileShape = androidx.compose.foundation.shape.RoundedCornerShape(18.dp)
+            positions.take(5).forEach { position ->
+                val tile = colors.tile(position.pct)
+                val result = Formatters.pct(position.pct)
+                Column(
+                    Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .clip(tileShape)
+                        .background(tile.background.copy(alpha = tile.background.alpha * opacityPercent / 100f))
+                        .padding(start = 9.dp, end = 7.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
+                ) {
                     Text(
-                        position.instrument.symbol,
-                        style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp, fontWeight = FontWeight.SemiBold),
-                        color = colors.muted,
+                        Formatters.symbolParts(position.instrument.symbol).first,
+                        style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, fontWeight = FontWeight.Bold),
+                        color = tile.symbol,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
+                        overflow = TextOverflow.Clip,
                     )
-                    Text(
-                        Formatters.pct(position.pct),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = colors.tone(position.pct),
-                        maxLines = 1,
-                    )
+                    Row(verticalAlignment = Alignment.Bottom) {
+                        Text(
+                            result.removeSuffix("%"),
+                            style = MaterialTheme.typography.titleSmall.copy(fontSize = 15.sp, fontWeight = FontWeight.ExtraBold),
+                            color = tile.value,
+                            maxLines = 1,
+                        )
+                        if (result.endsWith("%")) {
+                            Text(
+                                "%",
+                                style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, fontWeight = FontWeight.Bold),
+                                color = tile.value,
+                            )
+                        }
+                    }
                 }
             }
-            if (positions.isEmpty()) Spacer(Modifier.weight(1f))
-            Icon(Lucide.RefreshCw, contentDescription = null, tint = colors.muted, modifier = Modifier.size(16.dp))
+            if (positions.isEmpty()) {
+                Box(
+                    Modifier.fillMaxSize().clip(tileShape).background(colors.background.copy(alpha = opacityPercent / 100f)),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(Lucide.RefreshCw, contentDescription = null, tint = colors.muted, modifier = Modifier.size(16.dp))
+                }
+            }
         }
     }
 }

@@ -4,10 +4,10 @@
     <color name="window_background">#F5EAD8</color>
 
     <!-- Widget picker preview (the live widget takes its colors from Settings). -->
-    <color name="widget_preview_background">#E6F9F4ED</color>
     <color name="widget_text">#201E1D</color>
-    <color name="widget_muted">#645C50</color>
     <color name="widget_gain">#56633F</color>
     <color name="widget_loss">#A83A2C</color>
-    <color name="widget_line">#1A201E1D</color>
+    <color name="widget_gain_container">#DFE9C9</color>
+    <color name="widget_loss_container">#F6D9CF</color>
+    <color name="widget_on_strong">#F9F4ED</color>
 </resources>

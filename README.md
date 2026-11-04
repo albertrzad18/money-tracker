@@ -11,7 +11,8 @@ the ones from July are down 3%.
 
 - **Per-purchase gain/loss**: the % result of each lot against the current price, plus the
   weighted average price and totals per instrument.
-- **Home screen widget**: a scrollable Glance widget grouped by instrument, with a refresh
+- **Home screen widget**: tiles tinted by each position's result (4×1, 4×2), a portfolio total
+  with a sparkline (2×2), or a scrollable list of every purchase (4×3), with a refresh
   button. Theme, opacity and sort order are configurable.
 - **Background refresh** every ~30 minutes via WorkManager. It skips closed markets where it can.
 - **XTB tickers**: enter `PKN.PL`, `AAPL.US` or `CSPX.UK` and they are mapped to Yahoo
