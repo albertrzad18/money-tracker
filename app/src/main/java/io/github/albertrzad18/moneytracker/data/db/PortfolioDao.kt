@@ -39,6 +39,12 @@ interface PortfolioDao {
     @Query("SELECT * FROM lots ORDER BY buyDate, id")
     fun observeLots(): Flow<List<Lot>>
 
+    @Query("SELECT * FROM lots ORDER BY buyDate, id")
+    suspend fun getLots(): List<Lot>
+
+    @Query("SELECT * FROM lots WHERE instrumentId = :instrumentId")
+    suspend fun getLotsForInstrument(instrumentId: Long): List<Lot>
+
     @Query("SELECT * FROM lots WHERE sellDate IS NULL ORDER BY buyDate, id")
     suspend fun getOpenLots(): List<Lot>
 

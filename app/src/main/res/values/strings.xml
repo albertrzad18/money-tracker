@@ -138,6 +138,28 @@
     <string name="settings_refresh_description">Prices refresh automatically every 30 minutes when the phone is online. Stock prices are skipped at weekends.</string>
     <string name="settings_never_refreshed">Not refreshed yet</string>
     <string name="settings_about">About</string>
+    <string name="settings_backup">Backup</string>
+    <string name="settings_backup_description">Save all your purchases to a file and load them in another installation, e.g. after reinstalling the app. Import only adds purchases that are not there yet.</string>
+    <string name="action_export">Export</string>
+    <string name="action_import">Import</string>
+    <string name="backup_write_failed">Could not save the file.</string>
+    <string name="backup_read_failed">Could not read the file. It is not a Money Tracker backup or it is damaged.</string>
+    <plurals name="backup_exported">
+        <item quantity="one">Saved %d purchase.</item>
+        <item quantity="other">Saved %d purchases.</item>
+    </plurals>
+    <plurals name="backup_imported">
+        <item quantity="one">Added %d purchase.</item>
+        <item quantity="other">Added %d purchases.</item>
+    </plurals>
+    <plurals name="backup_nothing_new">
+        <item quantity="one">This purchase is already in the app.</item>
+        <item quantity="other">All %d purchases are already in the app.</item>
+    </plurals>
+    <plurals name="backup_skipped">
+        <item quantity="one">Skipped %d already in the app.</item>
+        <item quantity="other">Skipped %d already in the app.</item>
+    </plurals>
     <string name="settings_data_sources">Prices: Yahoo Finance (stocks, ETFs), CoinGecko (crypto). Exchange rates: NBP.</string>
     <string name="settings_disclaimer">Yahoo Finance has no official public API, so stock prices may stop working without notice. Prices can be delayed. This is not investment advice.</string>
     <string name="settings_version">Version %1$s</string>

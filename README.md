@@ -15,6 +15,8 @@ the ones from July are down 3%.
   with a sparkline (2×2), or a scrollable list of every purchase (4×3), with a refresh
   button. Theme, opacity and sort order are configurable.
 - **Background refresh** every ~30 minutes via WorkManager. It skips closed markets where it can.
+- **Backup**: export every purchase (sold ones too) to a JSON file and import it into another
+  installation; purchases already in the app are skipped.
 - **XTB tickers**: enter `PKN.PL`, `AAPL.US` or `CSPX.UK` and they are mapped to Yahoo
   symbols (`PKN.WA`, `AAPL`, `CSPX.L`).
 - **Instrument chart** with lines at your purchase prices and the average price.

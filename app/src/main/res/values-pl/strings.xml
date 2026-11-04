@@ -138,6 +138,36 @@
     <string name="settings_refresh_description">Kursy odświeżają się automatycznie co 30 minut, gdy telefon jest online. W weekendy kursy akcji są pomijane.</string>
     <string name="settings_never_refreshed">Jeszcze nie odświeżono</string>
     <string name="settings_about">O aplikacji</string>
+    <string name="settings_backup">Kopia danych</string>
+    <string name="settings_backup_description">Zapisz wszystkie zakupy do pliku i wczytaj je w innej instalacji, np. po ponownym zainstalowaniu aplikacji. Import dodaje tylko zakupy, których jeszcze nie ma.</string>
+    <string name="action_export">Eksportuj</string>
+    <string name="action_import">Importuj</string>
+    <string name="backup_write_failed">Nie udało się zapisać pliku.</string>
+    <string name="backup_read_failed">Nie udało się wczytać pliku. To nie jest kopia z Money Tracker albo plik jest uszkodzony.</string>
+    <plurals name="backup_exported">
+        <item quantity="one">Zapisano %d zakup.</item>
+        <item quantity="few">Zapisano %d zakupy.</item>
+        <item quantity="many">Zapisano %d zakupów.</item>
+        <item quantity="other">Zapisano %d zakupu.</item>
+    </plurals>
+    <plurals name="backup_imported">
+        <item quantity="one">Dodano %d zakup.</item>
+        <item quantity="few">Dodano %d zakupy.</item>
+        <item quantity="many">Dodano %d zakupów.</item>
+        <item quantity="other">Dodano %d zakupu.</item>
+    </plurals>
+    <plurals name="backup_nothing_new">
+        <item quantity="one">Ten zakup już jest w aplikacji.</item>
+        <item quantity="few">Wszystkie %d zakupy już są w aplikacji.</item>
+        <item quantity="many">Wszystkie %d zakupów już jest w aplikacji.</item>
+        <item quantity="other">Wszystkie %d zakupu już są w aplikacji.</item>
+    </plurals>
+    <plurals name="backup_skipped">
+        <item quantity="one">Pominięto %d, który już był.</item>
+        <item quantity="few">Pominięto %d, które już były.</item>
+        <item quantity="many">Pominięto %d, które już były.</item>
+        <item quantity="other">Pominięto %d, które już były.</item>
+    </plurals>
     <string name="settings_data_sources">Kursy: Yahoo Finance (akcje, ETF-y), CoinGecko (krypto). Kursy walut: NBP.</string>
     <string name="settings_disclaimer">Yahoo Finance nie ma oficjalnego publicznego API, więc kursy akcji mogą bez ostrzeżenia przestać działać. Kursy mogą być opóźnione. To nie jest porada inwestycyjna.</string>
     <string name="settings_version">Wersja %1$s</string>

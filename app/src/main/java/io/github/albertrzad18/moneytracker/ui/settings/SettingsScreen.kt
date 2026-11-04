@@ -1,6 +1,7 @@
 package io.github.albertrzad18.moneytracker.ui.settings
 
 import android.Manifest
+import android.net.Uri
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -46,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -62,6 +64,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.albertrzad18.moneytracker.R
 import io.github.albertrzad18.moneytracker.data.db.Instrument
 import io.github.albertrzad18.moneytracker.data.repo.AppSettings
+import io.github.albertrzad18.moneytracker.data.repo.BackupRepository
 import io.github.albertrzad18.moneytracker.data.repo.PortfolioRepository
 import io.github.albertrzad18.moneytracker.data.repo.SettingsRepository
 import io.github.albertrzad18.moneytracker.data.repo.WidgetTheme
@@ -81,6 +84,7 @@ import io.github.albertrzad18.moneytracker.ui.theme.InsetShape
 import io.github.albertrzad18.moneytracker.ui.theme.MoneyTheme
 import io.github.albertrzad18.moneytracker.ui.theme.WidgetColors
 import io.github.albertrzad18.moneytracker.util.Formatters
+import io.github.albertrzad18.moneytracker.util.runCatchingCancellable
 import io.github.albertrzad18.moneytracker.widget.WidgetUpdater
 import io.github.albertrzad18.moneytracker.work.Notifications
 import io.github.albertrzad18.moneytracker.work.Refresher
@@ -91,9 +95,18 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
+import java.time.Clock
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import javax.inject.Inject
+
+sealed interface BackupStatus {
+    data class Exported(val purchases: Int) : BackupStatus
+    data class Imported(val added: Int, val skipped: Int) : BackupStatus
+    data object WriteFailed : BackupStatus
+    data object ReadFailed : BackupStatus
+}
 
 data class SettingsUiState(
     val settings: AppSettings,
@@ -110,8 +123,14 @@ class SettingsViewModel @Inject constructor(
     private val portfolio: PortfolioRepository,
     private val refresher: Refresher,
     private val widgetUpdater: WidgetUpdater,
+    private val backup: BackupRepository,
+    private val clock: Clock,
 ) : ViewModel() {
     private val refreshing = MutableStateFlow(false)
+    private val _backupStatus = MutableStateFlow<BackupStatus?>(null)
+
+    /** Result of the last export or import, shown under the buttons. */
+    val backupStatus: StateFlow<BackupStatus?> = _backupStatus
 
     val state: StateFlow<SettingsUiState?> =
         combine(settings.settings, portfolio.instruments, portfolio.positions, refreshing) { s, instruments, positions, busy ->
@@ -143,6 +162,21 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    /** Suggested file name, e.g. money-tracker-2026-11-04.json. */
+    fun exportFileName(): String = "money-tracker-${LocalDate.now(clock)}.json"
+
+    fun export(uri: Uri) = launch {
+        _backupStatus.value = runCatchingCancellable { backup.export(uri) }
+            .fold({ BackupStatus.Exported(it) }, { BackupStatus.WriteFailed })
+    }
+
+    fun import(uri: Uri) = launch {
+        val result = runCatchingCancellable { backup.import(uri) }
+        _backupStatus.value = result.fold({ BackupStatus.Imported(it.added, it.skipped) }, { BackupStatus.ReadFailed })
+        // New instruments have no quotes yet.
+        if ((result.getOrNull()?.added ?: 0) > 0) refreshNow()
+    }
+
     private fun launch(block: suspend () -> Unit) {
         viewModelScope.launch { block() }
     }
@@ -170,6 +204,7 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
             WidgetSection(current, viewModel)
             LanguageSection()
             RefreshSection(current, viewModel)
+            BackupSection(viewModel)
             AboutSection()
         }
     }
@@ -509,6 +544,65 @@ private fun RefreshSection(state: SettingsUiState, viewModel: SettingsViewModel)
 private fun isToday(instant: Instant): Boolean {
     val zone = ZoneId.systemDefault()
     return instant.atZone(zone).toLocalDate() == Instant.now().atZone(zone).toLocalDate()
+}
+
+/** Export of every purchase to a JSON file and import back, e.g. into a fresh installation. */
+@Composable
+private fun BackupSection(viewModel: SettingsViewModel) {
+    val status by viewModel.backupStatus.collectAsStateWithLifecycle()
+    val exportLauncher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
+        uri?.let(viewModel::export)
+    }
+    val importLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        uri?.let(viewModel::import)
+    }
+    SettingsHeader(stringResource(R.string.settings_backup))
+    MoneyCard(contentPadding = PaddingValues(horizontal = 20.dp, vertical = 18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Text(stringResource(R.string.settings_backup_description), style = MaterialTheme.typography.bodyMedium)
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            PillButton(
+                stringResource(R.string.action_export),
+                onClick = { exportLauncher.launch(viewModel.exportFileName()) },
+                style = PillButtonStyle.Outlined,
+                height = 44.dp,
+                textStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                modifier = Modifier.weight(1f),
+            )
+            PillButton(
+                stringResource(R.string.action_import),
+                // Some file managers report JSON as octet-stream or plain text.
+                onClick = { importLauncher.launch(arrayOf("application/json", "application/octet-stream", "text/plain")) },
+                style = PillButtonStyle.Outlined,
+                height = 44.dp,
+                textStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                modifier = Modifier.weight(1f),
+            )
+        }
+        status?.let { BackupStatusText(it) }
+    }
+}
+
+@Composable
+private fun BackupStatusText(status: BackupStatus) {
+    val text = when (status) {
+        is BackupStatus.Exported -> pluralStringResource(R.plurals.backup_exported, status.purchases, status.purchases)
+        is BackupStatus.Imported -> if (status.added == 0 && status.skipped > 0) {
+            pluralStringResource(R.plurals.backup_nothing_new, status.skipped, status.skipped)
+        } else buildString {
+            append(pluralStringResource(R.plurals.backup_imported, status.added, status.added))
+            if (status.skipped > 0) {
+                append(" ").append(pluralStringResource(R.plurals.backup_skipped, status.skipped, status.skipped))
+            }
+        }
+        BackupStatus.WriteFailed -> stringResource(R.string.backup_write_failed)
+        BackupStatus.ReadFailed -> stringResource(R.string.backup_read_failed)
+    }
+    val failed = status is BackupStatus.WriteFailed || status is BackupStatus.ReadFailed
+    Text(
+        text,
+        style = MaterialTheme.typography.bodySmall,
+        color = if (failed) MoneyTheme.colors.loss else MaterialTheme.colorScheme.onSurfaceVariant,
+    )
 }
 
 @Composable
